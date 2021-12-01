@@ -1,7 +1,8 @@
-runtime: python39
+#runtime: python39
+runtime: python37
 
-#env_variables:
-#  CLOUD_SQL_USERNAME: admin
-#  CLOUD_SQL_PASSWORD: adminpassword
-#  CLOUD_SQL_DATABASE_NAME: product
-#  CLOUD_SQL_CONNECTION_NAME: ck-ad-1:europe-west2:product-database
+env_variables:
+  CLOUD_SQL_USERNAME: admin
+  CLOUD_SQL_PASSWORD: adminpassword
+  CLOUD_SQL_DATABASE_NAME: product
+  CLOUD_SQL_CONNECTION_NAME: ck-ad-1:europe-west2:product-database
