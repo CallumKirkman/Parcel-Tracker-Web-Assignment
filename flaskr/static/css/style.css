@@ -1,0 +1,31 @@
+/* Style the links inside the navigation bar */
+.nav-item a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 65px 45px;
+  text-decoration: none;
+  font-size: 28px;
+}
+
+/* Style the links inside the navigation bar */
+.nav-item active a {
+  float: left;
+  display: block;
+  color: #DCDCDC;
+  text-align: center;
+  padding: 65px 45px;
+  text-decoration: none;
+  font-size: 28px;
+}
+
+/* Change the color of links on hover */
+.container-fluid a:hover {
+  background-color: #ddd;
+}
+
+/* Add an active class to highlight the current page */
+.container-fluid a.nav-link {
+  background-color: #DCDCDC;
+}
