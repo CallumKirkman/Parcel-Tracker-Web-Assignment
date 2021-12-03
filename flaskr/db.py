@@ -25,8 +25,8 @@ def open_connection():
 def get():
     conn = open_connection()
     with conn.cursor() as cursor:
-        result = cursor.execute('SELECT * FROM item;')
-    items = cursor.fetchall()
+        result = cursor.execute('select * from item;')
+        items = cursor.fetchall()
     if result > 0:
         got_items = jsonify(items)
     else:
