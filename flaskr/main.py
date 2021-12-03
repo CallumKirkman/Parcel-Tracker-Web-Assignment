@@ -14,26 +14,25 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/home')
 def home():
-    # # When deployed to App Engine, the `GAE_ENV` environment variable will be set to `standard`
-    # if os.environ.get('GAE_ENV') == 'standard':
-    #     # If deployed, use the local socket interface for accessing Cloud SQL
-    #     unix_socket = '/cloudsql/{}'.format(db_connection_name)
-    #     cnx = pymysql.connect(user=db_user, password=db_password, unix_socket=unix_socket, db=db_name)
-    # else:
-    #     # If running locally, use the TCP connections instead Set up Cloud SQL Proxy
-    #     # (cloud.google.com/sql/docs/mysql/sql-proxy) so that your application can use
-    #     # 127.0.0.1:3306 to connect to your cloud SQL instance
-    #     host = '127.0.0.1'
-    #     cnx = pymysql.connect(user=db_user, password=db_password, host=host, db=db_name)
-    #
-    # with cnx.cursor() as cursor:
-    #     cursor.execute('select item_name from item;')
-    #     result = cursor.fetchall()
-    #     current_msg = result[0][0]
-    # cnx.close()
+    # When deployed to App Engine, the `GAE_ENV` environment variable will be set to `standard`
+    if os.environ.get('GAE_ENV') == 'standard':
+        # If deployed, use the local socket interface for accessing Cloud SQL
+        unix_socket = '/cloudsql/{}'.format(db_connection_name)
+        cnx = pymysql.connect(user=db_user, password=db_password, unix_socket=unix_socket, db=db_name)
+    else:
+        # If running locally, use the TCP connections instead Set up Cloud SQL Proxy
+        # (cloud.google.com/sql/docs/mysql/sql-proxy) so that your application can use
+        # 127.0.0.1:3306 to connect to your cloud SQL instance
+        host = '127.0.0.1'
+        cnx = pymysql.connect(user=db_user, password=db_password, host=host, db=db_name)
 
-    # return str(current_msg)
-    return render_template('home.html')
+    with cnx.cursor() as cursor:
+        cursor.execute('select item_name from item;')
+        result = cursor.fetchall()
+        current_msg = result[0][0]
+    cnx.close()
+
+    return render_template('home.html', current_msg=current_msg)
 
 
 @app.route('/about')
