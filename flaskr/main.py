@@ -20,20 +20,20 @@ def open_connection():
         if os.environ.get('GAE_ENV') == 'standard':
             # If deployed, use the local socket interface for accessing Cloud SQL
             unix_socket = '/cloudsql/{}'.format(db_connection_name)
-            conn = pymysql.connect(user=db_user, password=db_password, unix_socket=unix_socket, db=db_name,
+            cnx = pymysql.connect(user=db_user, password=db_password, unix_socket=unix_socket, db=db_name,
                                    cursorclass=pymysql.cursors.DictCursor)
         else:
             # If running locally, use the TCP connections instead
             # Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
             host = '127.0.0.1'
             port = 1433
-            conn = pymysql.connect(user=db_user, password=db_password, host=host, port=port, db=db_name,
+            cnx = pymysql.connect(user=db_user, password=db_password, host=host, port=port, db=db_name,
                                    cursorclass=pymysql.cursors.DictCursor)
 
     except pymysql.MySQLError as e:
         return e
 
-    return conn
+    return cnx
 
 
 def get_data():
