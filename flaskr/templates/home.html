@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% set active_page = "home" %}
 
-<h1>{% block title %}Home{% endblock %}</h1>
-
-{% set active_page = "home" %}
+<head>
+    {% block title %}Home{% endblock %}
+</head>
 
 {% block content %}
-<div class="starter-template">
-    <h1>Welcome to Advanced Development</h1>
+<body>
+<div class="main-body">
     <h1>Welcome to Home</h1>
-    <p class="lead">The aims of this unit is to give students a critical understanding of the design of applications
-        which support enterprise activities. There will be an emphasis on software productivity in large scale
-        distributed, heterogeneous applications.</p>
-    <p>All that you need to know is on the Unit Brightspace.</p>
-    <p>The first line is {{ data }}</p>
+    <p>Welcome to the main page of my app</p>
+
+    <h1 class="name">Hi, {{name}}</h1><hr style="width: 30%">
+	<h3 class="email">{{email}}</h3>
 </div>
+</body>
 {% endblock %}

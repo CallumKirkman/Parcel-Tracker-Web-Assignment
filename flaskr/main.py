@@ -1,33 +1,145 @@
 import logging
+import pyrebase
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session, abort
 from flaskr.database import open_connection, get_data, create_data
+
+# import datetime  # TODO: Delete?
 
 app = Flask(__name__)
 
+# Firebase details
+firebaseConfig = {
+  "apiKey": "AIzaSyBIYDxM_WvnjhiSL5SSZEM_mRsYelfvFgk",
+  "authDomain": "ck-ad-1.firebaseapp.com",
+  "projectId": "ck-ad-1",
+  "storageBucket": "ck-ad-1.appspot.com",
+  "messagingSenderId": "695010505553",
+  "appId": "1:695010505553:web:c8594855c4a3a6734a1970",
+  "measurementId": "G-G8SD0BZYBJ",
+  "databaseURL": "G-G8SD0BZYBJ",
+}
 
-@app.route('/')  # methods=['GET']?
+# Initialize firebase
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+db = firebase.database()
+
+# Initialise person as dictionary
+person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
+
+
+@app.route('/')
 @app.route('/home')
 def home():
-    data = get_data(conn)
-    print(data)
-    return render_template('home.html', data=data)
+    if person["is_logged_in"]:
+        return render_template("home.html", email=person["email"], name=person["name"])
+    else:
+        return redirect(url_for('login'))
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 
-# @app.route('/add', methods=['POST'])
-# def add_item():
-#     if not request.is_json:
-#         return jsonify({"msg": "Missing JSON in request"}), 400
-#     create_data(conn, request.get_json())
-#     return 'Item Added'
+@app.route("/signup")
+def signup():
+    return render_template("signup.html")
 
 
-@app.route('/register')
+@app.route('/data')  # methods=['GET']?
+def data():
+    fetched_data = get_data(conn)
+    # print(data)
+    return render_template('data.html', data=fetched_data)
+
+
+@app.route('/add', methods=['POST'])
+def add_item():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+    create_data(conn, request.get_json())
+    return 'Item Added'
+
+
+# If someone clicks on login, they are redirected to /result
+@app.route("/result", methods=["POST", "GET"])
+def result():
+    if request.method == "POST":  # Only if data has been posted
+        request_result = request.form  # Get the data
+        email = request_result["email"]
+        password = request_result["pass"]
+        try:
+            # Try signing in the user with the given information
+            user = auth.sign_in_with_email_and_password(email, password)
+            # Insert the user data in the global person
+            global person
+            person["is_logged_in"] = True
+            person["email"] = user["email"]
+            person["uid"] = user["localId"]
+            # Get the name of the user
+            result_data = db.child("users").get()
+            person["name"] = result_data.val()[person["uid"]]["name"]
+            # Redirect to home page
+            return redirect(url_for('home'))
+        except:
+            # If there is any error, redirect back to login
+            return redirect(url_for('login'))
+    else:
+        if person["is_logged_in"]:
+            return redirect(url_for('home'))
+        else:
+            return redirect(url_for('login'))
+
+
+# If someone clicks on register, they are redirected to /register
+@app.route("/register", methods=["POST", "GET"])
+def register():
+    if request.method == "POST":  # Only listen to POST
+        register_result = request.form  # Get the data submitted
+        email = register_result["email"]
+        password = register_result["pass"]
+        name = register_result["name"]
+        try:
+            # Try creating the user account using the provided data
+            auth.create_user_with_email_and_password(email, password)
+            # Login the user
+            user = auth.sign_in_with_email_and_password(email, password)
+            # Add data to global person
+            global person
+            person["is_logged_in"] = True
+            person["email"] = user["email"]
+            person["uid"] = user["localId"]
+            person["name"] = name
+            # Append data to the firebase realtime database
+            register_data = {"name": name, "email": email}
+            db.child("users").child(person["uid"]).set(register_data)
+            # To home page
+            return redirect(url_for('home'))
+        except:
+            # If there is any error, redirect to register
+            return redirect(url_for('register'))
+
+    else:
+        if person["is_logged_in"]:
+            return redirect(url_for('home'))
+        else:
+            return redirect(url_for('register'))
+
+
+# @app.route('/index')
+# def index():
+#     # For the sake of example, use static information to inflate the template.
+#     # This will be replaced with real information in later steps.
+#     dummy_times = [datetime.datetime(2021, 1, 1, 10, 0, 0),
+#                    datetime.datetime(2021, 1, 2, 10, 30, 0),
+#                    datetime.datetime(2021, 1, 3, 11, 0, 0),
+#                    ]
+#     return render_template('index.html', times=dummy_times)
+
+
+@app.route('/registerTemp')
 def form():
     return render_template('register.html')
     # [END form]

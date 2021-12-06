@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% set active_page = "data" %}
+
+<head>
+    <h1>{% block title %}Data{% endblock %}</h1>
+</head>
+
+{% block content %}
+<body>
+<div class="main-body">
+    <h1>Welcome to Data</h1>
+    <p>The database contains: </p>
+    <p>{{ data }}</p>
+</div>
+</body>
+{% endblock %}
