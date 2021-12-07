@@ -32,16 +32,16 @@ person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
 @app.route('/')
 @app.route('/home')
 def home():
-    # if person["is_logged_in"]:
-    #     return render_template("home.html", email=person["email"], name=person["name"])
-    # else:
-    #     return redirect(url_for('data'))
-    db_data = {"name": "Callum", "Age": 22, "Address": "20 St Ives"}
-    # db_data = {"name": "aaron"}
-    db.child("people").push(db_data)
-    print("Successful push!")
-
-    return render_template('home.html')
+    if person["is_logged_in"]:
+        return render_template("home.html", email=person["email"], name=person["name"])
+    else:
+        return redirect(url_for('data'))
+    # db_data = {"name": "Callum", "Age": 22, "Address": "20 St Ives"}
+    # # db_data = {"name": "aaron"}
+    # db.child("people").push(db_data)
+    # print("Successful push!")
+    #
+    # return render_template('home.html')
 
 
 @app.route('/login')
