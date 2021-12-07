@@ -1,6 +1,4 @@
-flask
-pymysql
-logging
-pyrebase
-os
-dotenv
+flask==2.0.2
+pymysql==1.0.2
+pyrebase==3.0.27
+python-dotenv==0.19.2
