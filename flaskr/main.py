@@ -4,7 +4,6 @@ import pyrebase
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session, abort
 from flaskr.database import open_connection, get_data, create_data
 
-import datetime  # TODO: Delete?
 
 app = Flask(__name__)
 

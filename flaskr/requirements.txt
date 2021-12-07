@@ -1,2 +1,6 @@
 flask
 pymysql
+logging
+pyrebase
+os
+dotenv
