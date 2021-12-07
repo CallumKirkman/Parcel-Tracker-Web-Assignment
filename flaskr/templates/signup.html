@@ -15,12 +15,12 @@
 <div class="wrapper fadeInDown">
     <div id="formContent">
         <!-- Tabs Titles -->
-        <a href="/"><h2 class="inactive underlineHover"> Sign In </h2></a>
+        <a href="http://127.0.0.1:5000/login"><h2 class="inactive underlineHover"> Sign In </h2></a>
         <h2 class="active">Sign Up </h2>
 
         <!-- Icon -->
         <div class="fadeIn first">
-            <img src="{{ url_for('static', filename = 'user.png') }}" id="icon" alt="User Icon"/>
+            <img src="../static/assets/user.png" id="icon" alt="User Icon"/>
         </div>
 
         <!-- Login Form -->
@@ -28,6 +28,8 @@
             <input type="text" id="name" class="fadeIn second" name="name" placeholder="name">
             <input type="email" id="login" class="fadeIn second" name="email" placeholder="email">
             <input type="password" id="password" class="fadeIn third" name="pass" placeholder="password">
+            <input type="password" id="confirmPassword" class="fadeIn third" name="confPass"
+                   placeholder="Confirm password">
             <input type="submit" class="fadeIn fourth" value="Sign Up">
         </form>
 

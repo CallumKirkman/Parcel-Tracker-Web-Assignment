@@ -4,20 +4,20 @@ import pyrebase
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session, abort
 from flaskr.database import open_connection, get_data, create_data
 
-# import datetime  # TODO: Delete?
+import datetime  # TODO: Delete?
 
 app = Flask(__name__)
 
 # Firebase details
 firebaseConfig = {
-  "apiKey": "AIzaSyBIYDxM_WvnjhiSL5SSZEM_mRsYelfvFgk",
-  "authDomain": "ck-ad-1.firebaseapp.com",
-  "projectId": "ck-ad-1",
-  "storageBucket": "ck-ad-1.appspot.com",
-  "messagingSenderId": "695010505553",
-  "appId": "1:695010505553:web:c8594855c4a3a6734a1970",
-  "measurementId": "G-G8SD0BZYBJ",
-  "databaseURL": "G-G8SD0BZYBJ",
+    "apiKey": "AIzaSyBIYDxM_WvnjhiSL5SSZEM_mRsYelfvFgk",
+    "authDomain": "ck-ad-1.firebaseapp.com",
+    "projectId": "ck-ad-1",
+    "storageBucket": "ck-ad-1.appspot.com",
+    "messagingSenderId": "695010505553",
+    "appId": "1:695010505553:web:c8594855c4a3a6734a1970",
+    "measurementId": "G-G8SD0BZYBJ",
+    "databaseURL": "",
 }
 
 # Initialize firebase
@@ -32,10 +32,16 @@ person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
 @app.route('/')
 @app.route('/home')
 def home():
-    if person["is_logged_in"]:
-        return render_template("home.html", email=person["email"], name=person["name"])
-    else:
-        return redirect(url_for('login'))
+    # if person["is_logged_in"]:
+    #     return render_template("home.html", email=person["email"], name=person["name"])
+    # else:
+    #     return redirect(url_for('data'))
+    db_data = {"name": "Callum", "Age": 22, "Address": "20 St Ives"}
+    # db_data = {"name": "aaron"}
+    db.child("people").push(db_data)
+    print("Successful push!")
+
+    return render_template('home.html')
 
 
 @app.route('/login')
@@ -51,7 +57,6 @@ def signup():
 @app.route('/data')  # methods=['GET']?
 def data():
     fetched_data = get_data(conn)
-    # print(data)
     return render_template('data.html', data=fetched_data)
 
 
@@ -81,16 +86,17 @@ def result():
             # Get the name of the user
             result_data = db.child("users").get()
             person["name"] = result_data.val()[person["uid"]]["name"]
-            # Redirect to home page
-            return redirect(url_for('home'))
         except:
             # If there is any error, redirect back to login
-            return redirect(url_for('login'))
+            return redirect(url_for('error_found'))
+        else:
+            # To home page
+            return redirect(url_for('home'))
     else:
         if person["is_logged_in"]:
             return redirect(url_for('home'))
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('error_found'))
 
 
 # If someone clicks on register, they are redirected to /register
@@ -98,34 +104,36 @@ def result():
 def register():
     if request.method == "POST":  # Only listen to POST
         register_result = request.form  # Get the data submitted
+        name = register_result["name"]
         email = register_result["email"]
         password = register_result["pass"]
-        name = register_result["name"]
-        try:
-            # Try creating the user account using the provided data
-            auth.create_user_with_email_and_password(email, password)
-            # Login the user
-            user = auth.sign_in_with_email_and_password(email, password)
-            # Add data to global person
-            global person
-            person["is_logged_in"] = True
-            person["email"] = user["email"]
-            person["uid"] = user["localId"]
-            person["name"] = name
-            # Append data to the firebase realtime database
-            register_data = {"name": name, "email": email}
-            db.child("users").child(person["uid"]).set(register_data)
-            # To home page
-            return redirect(url_for('home'))
-        except:
-            # If there is any error, redirect to register
-            return redirect(url_for('register'))
-
+        confirm_password = register_result["confPass"]
+        if password == confirm_password:
+            try:
+                # Try creating the user account using the provided data
+                auth.create_user_with_email_and_password(email, password)
+                # Login the user
+                user = auth.sign_in_with_email_and_password(email, password)
+                # Add data to global person
+                global person
+                person["is_logged_in"] = True
+                person["name"] = name
+                person["email"] = user["email"]
+                person["uid"] = user["localId"]
+                # Append data to the firebase realtime database
+                register_data = {"name": name, "email": email}
+                db.child("users").child(person["uid"]).set(register_data)
+            except:
+                # If there is any error, redirect to error
+                return redirect(url_for('error_found'))
+            else:
+                # To home page
+                return redirect(url_for('home'))
     else:
         if person["is_logged_in"]:
             return redirect(url_for('home'))
         else:
-            return redirect(url_for('register'))
+            return redirect(url_for('error_found'))
 
 
 # @app.route('/index')
@@ -139,40 +147,42 @@ def register():
 #     return render_template('index.html', times=dummy_times)
 
 
-@app.route('/registerTemp')
-def form():
-    return render_template('register.html')
-    # [END form]
-    # [START submitted]
-
-
-@app.route('/submitted', methods=['POST'])
-def submitted_form():
-    name = request.form['name']
-    email = request.form['email']
-    site = request.form['site_url']
-    comments = request.form['comments']
-    # [END submitted]
-    # [START render_template]
-    return render_template(
-        'submitted_form.html',
-        name=name,
-        email=email,
-        site=site,
-        comments=comments)
-    # [END render_template]
+# @app.route('/registerTemp')
+# def form():
+#     return render_template('register.html')
+#     # [END form]
+#     # [START submitted]
+#
+#
+# @app.route('/submitted', methods=['POST'])
+# def submitted_form():
+#     name = request.form['name']
+#     email = request.form['email']
+#     site = request.form['site_url']
+#     comments = request.form['comments']
+#     # [END submitted]
+#     # [START render_template]
+#     return render_template(
+#         'submitted_form.html',
+#         name=name,
+#         email=email,
+#         site=site,
+#         comments=comments)
+#     # [END render_template]
 
 
 @app.errorhandler(500)
 def server_error(e):
     # Log the error and stacktrace.
     logging.exception('An error occurred during a request.')
-    return 'An internal error occurred.', 500
+    return render_template('404.html'), 500
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html'), 404
+@app.route('/error')
+def error_found():
+    # Log the error and stacktrace.
+    logging.exception('An error occurred during a request.')
+    return render_template('404.html')
 
 
 if __name__ == '__main__':

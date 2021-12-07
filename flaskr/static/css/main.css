@@ -1,26 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
-/* NAVBAR */
-.nav-item a {
-  float: left;
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 30px 30px;
-  text-decoration: none;
-  font-size: 28px;
-}
-
-.nav-item active a {
-  color: #DCDCDC;
-}
-
-.container-fluid a:hover {
-  background-color: #ddd;
-}
-
-
-/* BASIC */
+/* BASIC
 
 html {
   background-color: #56baed;
@@ -47,9 +27,9 @@ h2 {
   margin: 40px 8px 10px 8px;
   color: #cccccc;
 }
+*/
 
-
-/* STRUCTURE */
+/* STRUCTURE
 
 .wrapper {
   display: flex;
@@ -83,7 +63,7 @@ h2 {
   -webkit-border-radius: 0 0 10px 10px;
   border-radius: 0 0 10px 10px;
 }
-
+*/
 
 
 /* TABS */
