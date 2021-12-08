@@ -120,7 +120,7 @@ def about():
 
 @app.route('/account')
 def account():
-    return render_template('account.html')
+    return render_template('account.html', email=person["email"], name=person["name"])
 
 
 # If someone clicks on login, they are redirected to /result
@@ -193,6 +193,27 @@ def register():
             return redirect(url_for('error_found'))
 
 
+@app.errorhandler(500)
+def server_error(e):
+    # Log the error and stacktrace.
+    logging.exception('An error occurred during a request.')
+    return render_template('404.html'), 500
+
+
+@app.route('/error')
+def error_found():
+    # Log the error and stacktrace.
+    logging.exception('An error occurred during a request.')
+    return render_template('404.html')
+
+
+if __name__ == '__main__':
+    conn = open_connection()
+    app.run()
+    # Only run for local development.
+    # app.run(host='127.0.0.1', port=8080, debug=True)
+
+
 # @app.route('/index')
 # def index():
 #     # For the sake of example, use static information to inflate the template.
@@ -234,24 +255,3 @@ def register():
 #         site=site,
 #         comments=comments)
 #     # [END render_template]
-
-
-@app.errorhandler(500)
-def server_error(e):
-    # Log the error and stacktrace.
-    logging.exception('An error occurred during a request.')
-    return render_template('404.html'), 500
-
-
-@app.route('/error')
-def error_found():
-    # Log the error and stacktrace.
-    logging.exception('An error occurred during a request.')
-    return render_template('404.html')
-
-
-if __name__ == '__main__':
-    conn = open_connection()
-    app.run()
-    # Only run for local development.
-    # app.run(host='127.0.0.1', port=8080, debug=True)
