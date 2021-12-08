@@ -32,8 +32,7 @@ auth = firebase.auth()
 # db = firebase.database()  # remove?
 
 # Initialize firestore sdk
-cred = credentials.Certificate(
-    "C:\\Users\\callu\\PycharmProjects\\advanced-development-assignment-CallumKirkman\\ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json")
+cred = credentials.Certificate("../ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json")
 firebase_admin.initialize_app(cred)
 # initialize firestore instance
 db = firestore.client()
