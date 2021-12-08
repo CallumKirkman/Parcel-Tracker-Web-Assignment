@@ -5,12 +5,45 @@ import pymysql
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session, abort
+
+import firebase_admin
+from firebase_admin import credentials, firestore
+
 # from flaskr.database import open_connection, get_data, create_data
 
 
 app = Flask(__name__)
 
+# Firebase details
+firebaseConfig = {
+    "apiKey": "AIzaSyBIYDxM_WvnjhiSL5SSZEM_mRsYelfvFgk",
+    "authDomain": "ck-ad-1.firebaseapp.com",
+    "projectId": "ck-ad-1",
+    "storageBucket": "ck-ad-1.appspot.com",
+    "messagingSenderId": "695010505553",
+    "appId": "1:695010505553:web:c8594855c4a3a6734a1970",
+    "measurementId": "G-G8SD0BZYBJ",
+    "databaseURL": "",
+}
 
+# Initialize firebase
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+# db = firebase.database()  # remove?
+
+# Initialize firestore sdk
+cred = credentials.Certificate(
+    "C:\\Users\\callu\\PycharmProjects\\advanced-development-assignment-CallumKirkman\\ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json")
+firebase_admin.initialize_app(cred)
+# initialize firestore instance
+db = firestore.client()
+
+
+# Initialise person as dictionary
+person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
+
+
+# SQL connect to database
 def open_connection():
     try:
         # When deployed to App Engine, the `GAE_ENV` environment variable will be set to `standard`
@@ -43,11 +76,12 @@ def open_connection():
     return cnx
 
 
+# SQL get data
 def get_data(cnx):
     with cnx.cursor() as cursor:
-        result = cursor.execute('select * from item;')
+        fetched_items = cursor.execute('select * from item;')
         items = cursor.fetchall()
-    if result > 0:
+    if fetched_items > 0:
         return items
         # got_items = jsonify(items)  # Needed?
     else:
@@ -55,6 +89,7 @@ def get_data(cnx):
         return got_items
 
 
+# SQL create data
 def create_data(cnx, item):
     with cnx.cursor() as cursor:
         cursor.execute('INSERT INTO item (item_id, item_name) VALUES(%s, %s)', (item["4"], item["test"]))
@@ -62,40 +97,13 @@ def create_data(cnx, item):
     cnx.close()
 
 
-# Firebase details
-firebaseConfig = {
-    "apiKey": "AIzaSyBIYDxM_WvnjhiSL5SSZEM_mRsYelfvFgk",
-    "authDomain": "ck-ad-1.firebaseapp.com",
-    "projectId": "ck-ad-1",
-    "storageBucket": "ck-ad-1.appspot.com",
-    "messagingSenderId": "695010505553",
-    "appId": "1:695010505553:web:c8594855c4a3a6734a1970",
-    "measurementId": "G-G8SD0BZYBJ",
-    "databaseURL": "",
-}
-
-# Initialize firebase
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
-db = firebase.database()
-
-# Initialise person as dictionary
-person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
-
-
 @app.route('/')
 @app.route('/home')
 def home():
     if person["is_logged_in"]:
-        return render_template("home.html", email=person["email"], name=person["name"])
+        return render_template("user_home.html", email=person["email"], name=person["name"])
     else:
-        return redirect(url_for('data'))
-    # db_data = {"name": "Callum", "Age": 22, "Address": "20 St Ives"}
-    # # db_data = {"name": "aaron"}
-    # db.child("people").push(db_data)
-    # print("Successful push!")
-    #
-    # return render_template('home.html')
+        return render_template("home.html")
 
 
 @app.route('/login')
@@ -111,6 +119,10 @@ def signup():
 @app.route('/data')  # methods=['GET']?
 def data():
     fetched_data = get_data(conn)
+
+    # # firestore add data
+    # db_data = {"name": "test", "age": 0, "address": "Location"}
+    # db.collection(u'users').add(db_data)
     return render_template('data.html', data=fetched_data)
 
 
@@ -137,11 +149,13 @@ def result():
             person["is_logged_in"] = True
             person["email"] = user["email"]
             person["uid"] = user["localId"]
-            # Get the name of the user
-            result_data = db.child("users").get()
-            person["name"] = result_data.val()[person["uid"]]["name"]
+            # # Get the name of the user
+            result_data = db.collection(u'users').document(person["uid"])
+            result_data = result_data.get()
+            result_data = result_data.to_dict()
+            person["name"] = result_data["name"]
         except:
-            # If there is any error, redirect back to login
+            # If there is any error, redirect to error
             return redirect(url_for('error_found'))
         else:
             # To home page
@@ -174,9 +188,9 @@ def register():
                 person["name"] = name
                 person["email"] = user["email"]
                 person["uid"] = user["localId"]
-                # Append data to the firebase realtime database
+                # # Append data to the firebase realtime database
                 register_data = {"name": name, "email": email}
-                db.child("users").child(person["uid"]).set(register_data)
+                db.collection(u'users').document(person["uid"]).set(register_data)
             except:
                 # If there is any error, redirect to error
                 return redirect(url_for('error_found'))
