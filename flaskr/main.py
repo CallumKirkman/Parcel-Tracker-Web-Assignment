@@ -9,8 +9,6 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# from flaskr.database import open_connection, get_data, create_data
-
 
 app = Flask(__name__)
 
@@ -32,7 +30,7 @@ auth = firebase.auth()
 # db = firebase.database()  # remove?
 
 # Initialize firestore sdk
-cred = credentials.Certificate("/static/assets/ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json")
+cred = credentials.Certificate("ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json")
 firebase_admin.initialize_app(cred)
 # initialize firestore instance
 db = firestore.client()
@@ -119,7 +117,7 @@ def signup():
 def data():
     fetched_data = get_data(conn)
 
-    # # firestore add data
+    # firestore add data
     # db_data = {"name": "test", "age": 0, "address": "Location"}
     # db.collection(u'users').add(db_data)
     return render_template('data.html', data=fetched_data)
@@ -148,7 +146,7 @@ def result():
             person["is_logged_in"] = True
             person["email"] = user["email"]
             person["uid"] = user["localId"]
-            # # Get the name of the user
+            # Get the name of the user
             result_data = db.collection(u'users').document(person["uid"])
             result_data = result_data.get()
             result_data = result_data.to_dict()
@@ -187,7 +185,7 @@ def register():
                 person["name"] = name
                 person["email"] = user["email"]
                 person["uid"] = user["localId"]
-                # # Append data to the firebase realtime database
+                # Append data to the firebase realtime database
                 register_data = {"name": name, "email": email}
                 db.collection(u'users').document(person["uid"]).set(register_data)
             except:
