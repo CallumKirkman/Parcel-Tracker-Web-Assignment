@@ -27,16 +27,19 @@
                 <a href="{{ url_for('home') }}">Home</a>
             </li>
             <li class="nav-item">
-                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('data') }}">Data</a>
             </li>
             <li class="nav-item">
-                <a href="{{ url_for('data') }}">Data</a>
+                <a href="{{ url_for('about') }}">About</a>
             </li>
         </ul>
         <ul class="navbar-nav me-right">
             <li class="logged-in">
-                <a href="#" class="btn btn-primary btn-lg btn-info modal-trigger"
-                   data-target="modal-account">Account</a>
+                <a href="{{ url_for('account') }}" class="btn btn-primary btn-lg btn-info">Account</a>
+            </li>
+            <li class="logged-in">
+                <a href="#" class="btn btn-primary btn-lg btn-warning modal-trigger"
+                   data-target="modal-basket">Basket</a>
             </li>
             <li class="logged-in">
                 <a href="#" class="btn btn-secondary btn-lg" id="logout">Logout</a>
@@ -50,27 +53,6 @@
         </ul>
     </div>
 </nav>
-
-
-<!--&lt;!&ndash; SIGN UP MODAL &ndash;&gt;-->
-<!--<div id="modal-signup" class="modal">-->
-<!--    <div class="modal-dialog modal-dialog-centered">-->
-<!--        <div class="modal-content">-->
-<!--            <h4>Sign up</h4><br/>-->
-<!--            <form id="signup-form">-->
-<!--                <div class="input-field">-->
-<!--                    <input type="email" id="signup-email" required/>-->
-<!--                    <label for="signup-email">Email address</label>-->
-<!--                </div>-->
-<!--                <div class="input-field">-->
-<!--                    <input type="password" id="signup-password" required/>-->
-<!--                    <label for="signup-password">Choose password</label>-->
-<!--                </div>-->
-<!--                <button class="btn yellow darken-2 z-depth-0">Sign up</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 <!-- SIGN UP MODAL -->
 <div id="modal-signup" class="modal">
@@ -92,32 +74,15 @@
                                placeholder="Confirm password">
                         <input type="submit" class="fadeIn fourth" value="Sign Up">
                     </form>
+                    <div class="fadeIn fifth">
+                        <a class="underlineHover float-right" href="#">Forgot Password?</a>
+                        <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!--&lt;!&ndash; LOGIN MODAL &ndash;&gt;-->
-<!--<div id="modal-login" class="modal">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content">-->
-<!--            <h4>Login</h4><br/>-->
-<!--            <form id="login-form">-->
-<!--                <div class="input-field">-->
-<!--                    <input type="email" id="login-email" required/>-->
-<!--                    <label for="login-email">Email address</label>-->
-<!--                </div>-->
-<!--                <div class="input-field">-->
-<!--                    <input type="password" id="login-password" required/>-->
-<!--                    <label for="login-password">Your password</label>-->
-<!--                </div>-->
-<!--                <button class="btn yellow darken-2 z-depth-0">Login</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
 
 <!-- LOGIN MODAL -->
 <div id="modal-login" class="modal">
@@ -136,7 +101,7 @@
                         <input type="password" id="passwordL" class="fadeIn third" name="pass" placeholder="password">
                         <input type="submit" class="fadeIn fourth" value="Log In">
                     </form>
-                    <div id="formFooter">
+                    <div class="fadeIn fifth">
                         <a class="underlineHover float-right" href="#">Forgot Password?</a>
                         <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Close</button>
                     </div>
@@ -146,13 +111,12 @@
     </div>
 </div>
 
-<!-- ACCOUNT MODAL -->
-<div id="modal-account" class="modal">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<!-- Basket MODAL -->
+<div id="modal-basket" class="modal">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content center-align">
-            <h4>Account details</h4><br/>
-            <div class="account-details"></div>
-            <div class="account-details"></div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <h4>Basket details</h4><br/>
         </div>
     </div>
 </div>

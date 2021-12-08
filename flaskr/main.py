@@ -103,16 +103,6 @@ def home():
         return render_template("home.html")
 
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-
-@app.route("/signup")
-def signup():
-    return render_template("signup.html")
-
-
 @app.route('/data')  # methods=['GET']?
 def data():
     fetched_data = get_data(conn)
@@ -123,12 +113,14 @@ def data():
     return render_template('data.html', data=fetched_data)
 
 
-@app.route('/add', methods=['POST'])
-def add_item():
-    if not request.is_json:
-        return jsonify({"msg": "Missing JSON in request"}), 400
-    create_data(conn, request.get_json())
-    return 'Item Added'
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/account')
+def account():
+    return render_template('account.html')
 
 
 # If someone clicks on login, they are redirected to /result
@@ -217,6 +209,14 @@ def register():
 #     return render_template('register.html')
 #     # [END form]
 #     # [START submitted]
+#
+#
+# @app.route('/add', methods=['POST'])
+# def add_item():
+#     if not request.is_json:
+#         return jsonify({"msg": "Missing JSON in request"}), 400
+#     create_data(conn, request.get_json())
+#     return 'Item Added'
 #
 #
 # @app.route('/submitted', methods=['POST'])
