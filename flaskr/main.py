@@ -72,7 +72,8 @@ def open_connection():
 
 
 # SQL get data
-def get_data(cnx):
+def get_data():
+    cnx = open_connection()
     with cnx.cursor() as cursor:
         fetched_items = cursor.execute('select * from item;')
         items = cursor.fetchall()
@@ -85,7 +86,8 @@ def get_data(cnx):
 
 
 # SQL create data
-def create_data(cnx, item):
+def create_data(item):
+    cnx = open_connection()
     with cnx.cursor() as cursor:
         cursor.execute('INSERT INTO item (item_id, item_name) VALUES(%s, %s)', (item["4"], item["test"]))
     cnx.commit()
@@ -103,11 +105,8 @@ def home():
 
 @app.route('/data')  # methods=['GET']?
 def data():
-    fetched_data = get_data(conn)
+    fetched_data = get_data()
 
-    # firestore add data
-    # db_data = {"name": "test", "age": 0, "address": "Location"}
-    # db.collection(u'users').add(db_data)
     return render_template('data.html', data=fetched_data)
 
 
@@ -219,7 +218,7 @@ def error_found():
 
 
 if __name__ == '__main__':
-    conn = open_connection()
+    # conn = open_connection()
     app.run()
     # Only run for local development.
     # app.run(host='127.0.0.1', port=8080, debug=True)
@@ -246,7 +245,7 @@ if __name__ == '__main__':
 # def add_item():
 #     if not request.is_json:
 #         return jsonify({"msg": "Missing JSON in request"}), 400
-#     create_data(conn, request.get_json())
+#     create_data(request.get_json())
 #     return 'Item Added'
 #
 #

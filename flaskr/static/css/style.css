@@ -4,7 +4,7 @@
   display: block;
   color: white;
   text-align: center;
-  padding: 30px 30px;
+  padding: 22px 22px;
   text-decoration: none;
   font-size: 28px;
 }
@@ -24,6 +24,6 @@
   background-color: #DCDCDC;
 } */
 
-.modal {
-  margin-bottom:10px;
+#modal-basket {
+  margin-top:20px;
 }
