@@ -4,8 +4,6 @@ import pymysql
 from dotenv import load_dotenv
 from flask import jsonify
 
-# TODO: Use Datastore for users? - Lab 3
-
 
 def open_connection():
     try:

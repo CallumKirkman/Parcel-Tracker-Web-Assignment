@@ -26,7 +26,6 @@ firebaseConfig = {
 # Initialize firebase
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
-# db = firebase.database()  # remove?
 
 # Initialize firestore sdk
 cred = credentials.Certificate("ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json")
@@ -72,14 +71,20 @@ def open_connection():
 
 
 # SQL get data
-def get_data():
+def get_data(item, table, column, column_id):  # TODO: is table needed?
     cnx = open_connection()
+
     with cnx.cursor() as cursor:
-        fetched_items = cursor.execute('select * from item;')
-        items = cursor.fetchall()
+        if column is None:
+            # Get everything
+            fetched_items = cursor.execute('select %s from %s;' % (item, table))
+            items = cursor.fetchall()
+        else:
+            # Get specific entry
+            fetched_items = cursor.execute("select * from %s where %s='%s';" % (table, column, column_id))
+            items = cursor.fetchone()
     if fetched_items > 0:
         return items
-        # got_items = jsonify(items)  # Needed?
     else:
         got_items = 'No items in DB'
         return got_items
@@ -89,7 +94,7 @@ def get_data():
 def create_data(item):
     cnx = open_connection()
     with cnx.cursor() as cursor:
-        cursor.execute('INSERT INTO item (item_id, item_name) VALUES(%s, %s)', (item["4"], item["test"]))
+        cursor.execute('INSERT INTO item (item_id, item_name) VALUES(%s, %s)' % (item["4"], item["test"]))
     cnx.commit()
     cnx.close()
 
@@ -103,16 +108,22 @@ def home():
         return render_template("home.html")
 
 
-@app.route('/data')  # methods=['GET']?
+@app.route('/data')
 def data():
-    fetched_data = get_data()
+    products = get_data("*", "product", None, None)
 
-    return render_template('data.html', data=fetched_data)
+    return render_template('data.html', products=products)
 
 
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/empty')
+def empty_cart():
+    # TODO: remove all items from basket?
+    return
 
 
 @app.route('/tracking')
@@ -123,6 +134,41 @@ def tracking():
 @app.route('/account')
 def account():
     return render_template('account.html', email=person["email"], name=person["name"])
+
+
+@app.route('/add-to-cart', methods=['POST'])
+def add_product_to_cart():
+    try:
+        quantity = int(request.form['quantity'])
+        code = request.form['code']
+        # Validate the received values
+        if quantity and code and request.method == 'POST':
+            row = get_data("*", "product", "code", code)
+
+            item_array = {
+                row['code']: {'name': row['name'], 'code': row['code'], 'quantity': quantity, 'price': row['price'],
+                              'image': row['image'], 'total_price': quantity * row['price']}}
+            print(item_array)
+
+            # if doesn't exist - add basket collection to user
+            # item ID in basket is item name
+            # if name exists - get item quantity - add new quantity
+
+            return redirect(url_for('data'))
+        else:
+            return redirect(url_for('error_found'))  # or 'Error while adding item to cart'?
+    except Exception as e:
+        print(e)
+
+
+@app.route('/delete')
+def delete_product(code):
+    # remove item from basket
+
+    # all_total_price = 0?
+    # all_total_quantity = 0?
+
+    return redirect(url_for('data'))
 
 
 # If someone clicks on login, they are redirected to /login
@@ -218,49 +264,14 @@ def error_found():
 
 
 if __name__ == '__main__':
-    # conn = open_connection()
+    # conn = open_connection()  # TODO: Make work on cloud?
     app.run()
     # Only run for local development.
     # app.run(host='127.0.0.1', port=8080, debug=True)
 
-# @app.route('/index')
-# def index():
-#     # For the sake of example, use static information to inflate the template.
-#     # This will be replaced with real information in later steps.
-#     dummy_times = [datetime.datetime(2021, 1, 1, 10, 0, 0),
-#                    datetime.datetime(2021, 1, 2, 10, 30, 0),
-#                    datetime.datetime(2021, 1, 3, 11, 0, 0),
-#                    ]
-#     return render_template('index.html', times=dummy_times)
-
-
-# @app.route('/registerTemp')
-# def form():
-#     return render_template('register.html')
-#     # [END form]
-#     # [START submitted]
-#
-#
 # @app.route('/add', methods=['POST'])
 # def add_item():
 #     if not request.is_json:
 #         return jsonify({"msg": "Missing JSON in request"}), 400
 #     create_data(request.get_json())
 #     return 'Item Added'
-#
-#
-# @app.route('/submitted', methods=['POST'])
-# def submitted_form():
-#     name = request.form['name']
-#     email = request.form['email']
-#     site = request.form['site_url']
-#     comments = request.form['comments']
-#     # [END submitted]
-#     # [START render_template]
-#     return render_template(
-#         'submitted_form.html',
-#         name=name,
-#         email=email,
-#         site=site,
-#         comments=comments)
-#     # [END render_template]
