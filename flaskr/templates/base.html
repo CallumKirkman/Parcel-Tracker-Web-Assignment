@@ -42,7 +42,7 @@
                    data-target="modal-basket">Basket</a>
             </li>
             <li class="logged-in">
-                <a href="#" class="btn btn-secondary btn-lg" id="logout">Logout</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg" id="logout">Logout</a>
             </li>
             <li class="logged-out">
                 <a href="#" class="btn btn-primary btn-lg modal-trigger" data-target="modal-login">Login</a>
@@ -53,36 +53,6 @@
         </ul>
     </div>
 </nav>
-
-<!-- SIGN UP MODAL -->
-<div id="modal-signup" class="modal">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="wrapper fadeInDown">
-                <div id="formContentSignIn">
-                    <!-- Icon -->
-                    <div class="fadeIn first">
-                        <img src="../static/assets/user.png" id="SignIcon" alt="User Icon"/>
-                    </div>
-
-                    <!-- Login Form -->
-                    <form action="{{ url_for('register') }}" method="POST">
-                        <input type="text" id="name" class="fadeIn second" name="name" placeholder="name">
-                        <input type="email" id="loginS" class="fadeIn second" name="email" placeholder="email">
-                        <input type="password" id="passwordS" class="fadeIn third" name="pass" placeholder="password">
-                        <input type="password" id="confirmPassword" class="fadeIn third" name="confPass"
-                               placeholder="Confirm password">
-                        <input type="submit" class="fadeIn fourth" value="Sign Up">
-                    </form>
-                    <div class="fadeIn fifth">
-                        <a class="underlineHover float-right" href="#">Forgot Password?</a>
-                        <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- LOGIN MODAL -->
 <div id="modal-login" class="modal">
@@ -96,10 +66,40 @@
                     </div>
 
                     <!-- Login Form -->
-                    <form action="{{ url_for('result') }}" method="POST">
+                    <form action="{{ url_for('login') }}" method="POST">
                         <input type="email" id="loginL" class="fadeIn second" name="email" placeholder="email">
                         <input type="password" id="passwordL" class="fadeIn third" name="pass" placeholder="password">
                         <input type="submit" class="fadeIn fourth" value="Log In">
+                    </form>
+                    <div class="fadeIn fifth">
+                        <a class="underlineHover float-right" href="#">Forgot Password?</a>
+                        <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SIGN UP MODAL -->
+<div id="modal-signup" class="modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="wrapper fadeInDown">
+                <div id="formContentSignIn">
+                    <!-- Icon -->
+                    <div class="fadeIn first">
+                        <img src="../static/assets/user.png" id="SignIcon" alt="User Icon"/>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form action="{{ url_for('signup') }}" method="POST">
+                        <input type="text" id="name" class="fadeIn second" name="name" placeholder="name">
+                        <input type="email" id="loginS" class="fadeIn second" name="email" placeholder="email">
+                        <input type="password" id="passwordS" class="fadeIn third" name="pass" placeholder="password">
+                        <input type="password" id="confirmPassword" class="fadeIn third" name="confPass"
+                               placeholder="Confirm password">
+                        <input type="submit" class="fadeIn fourth" value="Sign Up">
                     </form>
                     <div class="fadeIn fifth">
                         <a class="underlineHover float-right" href="#">Forgot Password?</a>

@@ -123,9 +123,9 @@ def account():
     return render_template('account.html', email=person["email"], name=person["name"])
 
 
-# If someone clicks on login, they are redirected to /result
-@app.route("/result", methods=["POST", "GET"])
-def result():
+# If someone clicks on login, they are redirected to /login
+@app.route("/login", methods=["POST", "GET"])
+def login():
     if request.method == "POST":  # Only if data has been posted
         request_result = request.form  # Get the data
         email = request_result["email"]
@@ -139,10 +139,10 @@ def result():
             person["email"] = user["email"]
             person["uid"] = user["localId"]
             # Get the name of the user
-            result_data = db.collection(u'users').document(person["uid"])
-            result_data = result_data.get()
-            result_data = result_data.to_dict()
-            person["name"] = result_data["name"]
+            login_data = db.collection(u'users').document(person["uid"])
+            login_data = login_data.get()
+            login_data = login_data.to_dict()
+            person["name"] = login_data["name"]
         except:
             # If there is any error, redirect to error
             return redirect(url_for('error_found'))
@@ -156,15 +156,15 @@ def result():
             return redirect(url_for('error_found'))
 
 
-# If someone clicks on register, they are redirected to /register
-@app.route("/register", methods=["POST", "GET"])
-def register():
+# If someone clicks on signup, they are redirected to /signup
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
     if request.method == "POST":  # Only listen to POST
-        register_result = request.form  # Get the data submitted
-        name = register_result["name"]
-        email = register_result["email"]
-        password = register_result["pass"]
-        confirm_password = register_result["confPass"]
+        request_result = request.form  # Get the data submitted
+        name = request_result["name"]
+        email = request_result["email"]
+        password = request_result["pass"]
+        confirm_password = request_result["confPass"]
         if password == confirm_password:
             try:
                 # Try creating the user account using the provided data
@@ -178,8 +178,8 @@ def register():
                 person["email"] = user["email"]
                 person["uid"] = user["localId"]
                 # Append data to the firebase realtime database
-                register_data = {"name": name, "email": email}
-                db.collection(u'users').document(person["uid"]).set(register_data)
+                signup_data = {"name": name, "email": email}
+                db.collection(u'users').document(person["uid"]).set(signup_data)
             except:
                 # If there is any error, redirect to error
                 return redirect(url_for('error_found'))
@@ -191,6 +191,14 @@ def register():
             return redirect(url_for('home'))
         else:
             return redirect(url_for('error_found'))
+
+
+@app.route("/logout", methods=["POST", "GET"])
+def logout():
+    # Toggle javascript hidden
+    # person["is_logged_in"] = False
+
+    return redirect(url_for('home'))
 
 
 @app.errorhandler(500)
