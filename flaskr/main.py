@@ -9,7 +9,6 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-
 app = Flask(__name__)
 
 # Firebase details
@@ -34,7 +33,6 @@ cred = credentials.Certificate("ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json"
 firebase_admin.initialize_app(cred)
 # initialize firestore instance
 db = firestore.client()
-
 
 # Initialise person as dictionary
 person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
@@ -116,6 +114,11 @@ def data():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/tracking')
+def tracking():
+    return render_template('tracking.html')
 
 
 @app.route('/account')
@@ -220,7 +223,6 @@ if __name__ == '__main__':
     app.run()
     # Only run for local development.
     # app.run(host='127.0.0.1', port=8080, debug=True)
-
 
 # @app.route('/index')
 # def index():
