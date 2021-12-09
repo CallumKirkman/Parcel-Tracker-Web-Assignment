@@ -266,36 +266,3 @@ input[type=email]:placeholder, input[type=password]:placeholder, input[type=text
 * {
   box-sizing: border-box;
 }
-
-
-/* CUSTOM CSS */
-
-/* Style the links inside the navigation bar */
-.nav-item a {
-  float: left;
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 22px 22px;
-  text-decoration: none;
-  font-size: 28px;
-}
-
-/* Style the links inside the navigation bar */
-.nav-item active a {
-  color: #DCDCDC;
-}
-
-/* Change the color of links on hover */
-.container-fluid a:hover {
-  background-color: #ddd;
-}
-
-/* Add an active class to highlight the current page
-.container-fluid a.nav-link {
-  background-color: #DCDCDC;
-} */
-
-#modal-basket {
-  margin-top:20px;
-}
