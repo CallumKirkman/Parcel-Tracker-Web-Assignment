@@ -128,6 +128,13 @@ def empty_cart():
 
 @app.route('/tracking')
 def tracking():
+    # TODO: Add orders to user firebase
+
+    # TODO: maybe - create order function? On checkout?
+    # TODO: if doesn't exist - add order collection to user
+    # TODO: add order to collection
+    # TODO: add items to order
+
     return render_template('tracking.html')
 
 
@@ -150,9 +157,9 @@ def add_product_to_cart():
                               'image': row['image'], 'total_price': quantity * row['price']}}
             print(item_array)
 
-            # if doesn't exist - add basket collection to user
-            # item ID in basket is item name
-            # if name exists - get item quantity - add new quantity
+            # TODO: if doesn't exist - add basket collection to user
+            # TODO: item ID in basket is item name
+            # TODO: if name exists - get item quantity - add new quantity
 
             return redirect(url_for('data'))
         else:
@@ -163,7 +170,7 @@ def add_product_to_cart():
 
 @app.route('/delete')
 def delete_product(code):
-    # remove item from basket
+    # TODO: remove item from basket
 
     # all_total_price = 0?
     # all_total_quantity = 0?
@@ -243,8 +250,7 @@ def signup():
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
-    # Toggle javascript hidden
-    # person["is_logged_in"] = False
+    # TODO: Toggle javascript hidden, person["is_logged_in"] = False
 
     return redirect(url_for('home'))
 
