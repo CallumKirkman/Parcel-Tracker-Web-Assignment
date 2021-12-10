@@ -19,11 +19,16 @@
   background-color: #ddd;
 }
 
+#product-list {
+  width: 50%;
+  margin: 0 auto;
+}
+
 /* Add an active class to highlight the current page
 .container-fluid a.nav-link {
   background-color: #DCDCDC;
 } */
 
 #modal-basket {
-  margin-top:20px;
+  margin-top:40px;
 }

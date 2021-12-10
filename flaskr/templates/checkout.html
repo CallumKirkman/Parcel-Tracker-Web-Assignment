@@ -7,7 +7,7 @@
 
 {% block content %}
 <body>
-<div class="container" style="margin-top: 40px !important;">
+<div class="container" style="margin: 50px !important;">
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -27,7 +27,7 @@
             <hr/>
             <div class="item-title">{{ item.name }}</div>
             <div class="item-image"><img src="../{{ item.image }}" style="width:240px;height:200px;"></div>
-            <div class="item-quantity">{{ item.quantity }}</div>
+            <div class="item-quantity">Quantity: {{ item.quantity }}</div>
             <div class="item-total_price">£ {{ item.total_price }}</div>
             <hr/>
             <br>
@@ -36,6 +36,9 @@
 
     {% endfor %}
 
+    <div class="panel-body">
+        <h4 class="text-center">Total price = {{ checkout_price }}</h4>
+    </div>
 </div>
 </body>
 {% endblock %}

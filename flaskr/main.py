@@ -146,15 +146,14 @@ def account():
 @app.route('/checkout')
 def checkout():
     item_location = db.collection(u'users').document(person["uid"]).collection(u'basket').stream()
-    # items = {}
     items = []
+    checkout_price = 0
     for item in item_location:
-        # items.update({item.id: item.to_dict()})
         items.append(item.to_dict())
+        price = item.to_dict()
+        checkout_price = checkout_price + price["total_price"]
 
-    print(items)
-
-    return render_template('checkout.html', items=items)
+    return render_template('checkout.html', items=items, checkout_price=checkout_price)
 
 
 @app.route('/empty')
