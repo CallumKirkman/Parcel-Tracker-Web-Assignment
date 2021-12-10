@@ -17,7 +17,7 @@
     <link href="../static/css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="chooseFunction()">
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
         <img src="../static/assets/companyLogo.png" alt="Company Logo" width="85" height="85"/>
@@ -44,11 +44,12 @@
                    data-target="modal-basket">Basket</a>
             </li>
             <li class="logged-in">
-                <!-- sign-out -->
-                <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg" id="logout">Logout</a>
+                <a onclick="logoutFunction()" href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg"
+                   id="logout">Logout</a>
             </li>
             <li class="logged-out">
-                <a href="#" class="btn btn-primary btn-lg modal-trigger" data-target="modal-login">Login</a>
+                <a href="#" class="btn btn-primary btn-lg modal-trigger"
+                   data-target="modal-login">Login</a>
             </li>
             <li class="logged-out">
                 <a href="#" class="btn btn-primary btn-lg modal-trigger" data-target="modal-signup">Sign up</a>
@@ -72,7 +73,7 @@
                     <form action="{{ url_for('login') }}" method="POST">
                         <input type="email" id="loginL" class="fadeIn second" name="email" placeholder="email">
                         <input type="password" id="passwordL" class="fadeIn third" name="pass" placeholder="password">
-                        <input type="submit" class="fadeIn fourth" value="Log In">
+                        <input onclick="loginFunction()" type="submit" class="fadeIn fourth" value="Log In">
                     </form>
                     <div class="fadeIn fifth">
                         <a class="underlineHover float-right" href="#">Forgot Password?</a>
@@ -102,7 +103,7 @@
                         <input type="password" id="passwordS" class="fadeIn third" name="pass" placeholder="password">
                         <input type="password" id="confirmPassword" class="fadeIn third" name="confPass"
                                placeholder="Confirm password">
-                        <input type="submit" class="fadeIn fourth" value="Sign Up">
+                        <input onclick="loginFunction()" type="submit" class="fadeIn fourth" value="Sign Up">
                     </form>
                     <div class="fadeIn fifth">
                         <a class="underlineHover float-right" href="#">Forgot Password?</a>
@@ -130,6 +131,48 @@
     {% block content %}{% endblock %}
 
 </main>
+
+
+<script>
+    function chooseFunction() {
+      let status = '{{ logg_status }}';
+
+      if (status == "True") {
+        loginFunction();
+      } else {
+        logoutFunction();
+      }
+    }
+</script>
+<script>
+    function logoutFunction() {
+      var x, i;
+      x = document.querySelectorAll(".logged-in");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+      var y, ii;
+      y = document.querySelectorAll(".logged-out");
+      for (ii = 0; ii < y.length; ii++) {
+        y[ii].style.display = "block";
+      }
+    }
+</script>
+<script>
+    function loginFunction() {
+      var x, i;
+      x = document.querySelectorAll(".logged-out");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+      var y, ii;
+      y = document.querySelectorAll(".logged-in");
+      for (ii = 0; ii < y.length; ii++) {
+        y[ii].style.display = "block";
+      }
+    }
+</script>
+
 
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

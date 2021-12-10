@@ -33,9 +33,6 @@ firebase_admin.initialize_app(cred)
 # initialize firestore instance
 db = firestore.client()
 
-# Initialise person as dictionary
-person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
-
 
 # SQL connect to database
 def open_connection():
@@ -99,11 +96,20 @@ def create_data(item):
     cnx.close()
 
 
+# Initialise person as dictionary
+person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
+
+
+@app.context_processor
+def inject_status():
+    return dict(logg_status=person["is_logged_in"], name=person["name"], email=person["email"], uid=person["uid"])
+
+
 @app.route('/')
 @app.route('/home')
 def home():
     if person["is_logged_in"]:
-        return render_template("user_home.html", email=person["email"], name=person["name"])
+        return render_template("user_home.html")
     else:
         return render_template("home.html")
 
@@ -140,7 +146,7 @@ def tracking():
 
 @app.route('/account')
 def account():
-    return render_template('account.html', email=person["email"], name=person["name"])
+    return render_template('account.html')
 
 
 @app.route('/add-to-cart', methods=['POST'])
@@ -261,7 +267,7 @@ def signup():
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
-    # TODO: Toggle javascript hidden, person["is_logged_in"] = False
+    person["is_logged_in"] = False
 
     return redirect(url_for('home'))
 
