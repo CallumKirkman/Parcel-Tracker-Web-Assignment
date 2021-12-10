@@ -152,14 +152,25 @@ def add_product_to_cart():
         if quantity and code and request.method == 'POST':
             row = get_data("*", "product", "code", code)
 
-            item_array = {
-                row['code']: {'name': row['name'], 'code': row['code'], 'quantity': quantity, 'price': row['price'],
-                              'image': row['image'], 'total_price': quantity * row['price']}}
-            print(item_array)
+            # Update new quantity & add total price
+            row = {'name': row['name'], 'code': row['code'], 'image': row['image'], 'quantity': quantity,
+                   'price': row['price'], 'total_price': quantity * row['price']}
 
-            # TODO: if doesn't exist - add basket collection to user
-            # TODO: item ID in basket is item name
-            # TODO: if name exists - get item quantity - add new quantity
+            # Check if item already in basket
+            ref = db.collection(u'users').document(person["uid"]).collection(u'basket').document(row["name"]).get()
+            if ref.exists:
+                # Update quantity & add total price
+                ref = ref.to_dict()
+                basket_quantity = int(row["quantity"]) + int(ref["quantity"])
+
+                row = {'name': row['name'], 'code': row['code'], 'image': row['image'], 'quantity': basket_quantity,
+                       'price': row['price'], 'total_price': basket_quantity * row['price']}
+
+                db.collection(u'users').document(person["uid"]).collection(u'basket').document(row["name"]) \
+                    .set(row, merge=True)
+            else:
+                # Add item
+                db.collection(u'users').document(person["uid"]).collection(u'basket').document(row["name"]).set(row)
 
             return redirect(url_for('data'))
         else:
