@@ -121,17 +121,6 @@ def data():
     return render_template('data.html', products=products)
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-
-@app.route('/empty')
-def empty_cart():
-    # TODO: remove all items from basket?
-    return
-
-
 @app.route('/tracking')
 def tracking():
     # TODO: Add orders to user firebase
@@ -144,9 +133,34 @@ def tracking():
     return render_template('tracking.html')
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/account')
 def account():
     return render_template('account.html')
+
+
+@app.route('/checkout')
+def checkout():
+    item_location = db.collection(u'users').document(person["uid"]).collection(u'basket').stream()
+    # items = {}
+    items = []
+    for item in item_location:
+        # items.update({item.id: item.to_dict()})
+        items.append(item.to_dict())
+
+    print(items)
+
+    return render_template('checkout.html', items=items)
+
+
+@app.route('/empty')
+def empty_cart():
+    # TODO: remove all items from basket?
+    return
 
 
 @app.route('/add-to-cart', methods=['POST'])
