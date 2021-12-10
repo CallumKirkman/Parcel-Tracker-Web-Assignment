@@ -97,7 +97,7 @@ def create_data(item):
 
 
 # Initialise person as dictionary
-person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
+person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}  # TODO: Admin user
 
 
 @app.context_processor
@@ -153,13 +153,30 @@ def checkout():
         price = item.to_dict()
         checkout_price = checkout_price + price["total_price"]
 
+    if len(items) == 0:
+        items = "No items in cart"
+
     return render_template('checkout.html', items=items, checkout_price=checkout_price)
+
+
+@app.route('/delete')
+def delete_product(code):
+    # TODO: remove item from basket
+
+    # all_total_price = 0?
+    # all_total_quantity = 0?
+
+    return redirect(url_for('data'))
 
 
 @app.route('/empty')
 def empty_cart():
-    # TODO: remove all items from basket?
-    return
+
+    item_location = db.collection(u'users').document(person["uid"]).collection(u'basket').stream()
+    for item in item_location:
+        item.reference.delete()
+
+    return redirect(url_for('checkout'))
 
 
 @app.route('/add-to-cart', methods=['POST'])
@@ -196,16 +213,6 @@ def add_product_to_cart():
             return redirect(url_for('error_found'))  # or 'Error while adding item to cart'?
     except Exception as e:
         print(e)
-
-
-@app.route('/delete')
-def delete_product(code):
-    # TODO: remove item from basket
-
-    # all_total_price = 0?
-    # all_total_quantity = 0?
-
-    return redirect(url_for('data'))
 
 
 # If someone clicks on login, they are redirected to /login

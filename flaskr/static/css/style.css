@@ -24,6 +24,14 @@
   margin: 0 auto;
 }
 
+.vertical-center {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Add an active class to highlight the current page
 .container-fluid a.nav-link {
   background-color: #DCDCDC;
