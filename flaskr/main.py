@@ -3,11 +3,14 @@ import pyrebase
 import os
 import pymysql
 
+from datetime import datetime
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session, abort
 
 import firebase_admin
 from firebase_admin import credentials, firestore
+
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
@@ -27,11 +30,17 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
-# Initialize firestore sdk
+# Initialize firestore
 cred = credentials.Certificate("ck-ad-1-firebase-adminsdk-szo9b-4294d0a5ab.json")
 firebase_admin.initialize_app(cred)
 # initialize firestore instance
-db = firestore.client()
+firestoreDB = firestore.client()
+
+# Initialize mongoDB
+cluster = MongoClient(
+    "mongodb+srv://admin:adminpassword@adparceltracker.gxnsa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+mongoDB = cluster["order-database"]
+orders = mongoDB["orders"]
 
 
 # Product SQL connect to database
@@ -126,8 +135,6 @@ def data():
 
 @app.route('/tracking')
 def tracking():
-    # TODO: Create order database!!
-
     return render_template('tracking.html')
 
 
@@ -163,7 +170,7 @@ def update_account():
 
         user_info = {"name": name, "email": email, "address": address, "picture": picture}
 
-        db.collection(u'users').document(person["uid"]).set(user_info, merge=True)
+        firestoreDB.collection(u'users').document(person["uid"]).set(user_info, merge=True)
 
         return redirect(url_for('home'))
 
@@ -173,7 +180,7 @@ def update_account():
 
 @app.route('/checkout')
 def checkout():
-    item_location = db.collection(u'users').document(person["uid"]).collection(u'basket').stream()
+    item_location = firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').stream()
     items = []
     checkout_price = 0
     for item in item_location:
@@ -189,10 +196,22 @@ def checkout():
 
 @app.route('/create-order')
 def create_order():
-    # TODO: maybe - create order function? On checkout?
-    # TODO: add order to database
-    # TODO: wipe basket?
+    item_location = firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').stream()
+    date = datetime.today().strftime('%d-%m-%y')
+    items = []
+    checkout_price = 0
+    for item in item_location:
+        items.append(item.to_dict())
+        price = item.to_dict()
+        checkout_price = checkout_price + price["total_price"]
+        item.reference.delete()
 
+    order = {"uid": person["uid"], "items": items, "orderPrice": checkout_price, "date": date,
+             "progress": "processing"}
+
+    orders.insert_one({"order": order})
+
+    # TODO: maybe - create order function?
     return redirect(url_for('tracking'))
 
 
@@ -205,7 +224,7 @@ def delete_product(code):
 
 @app.route('/empty')
 def empty_cart():
-    item_location = db.collection(u'users').document(person["uid"]).collection(u'basket').stream()
+    item_location = firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').stream()
     for item in item_location:
         item.reference.delete()
 
@@ -226,7 +245,8 @@ def add_product_to_cart():
                    'price': row['price'], 'total_price': quantity * row['price']}
 
             # Check if item already in basket
-            ref = db.collection(u'users').document(person["uid"]).collection(u'basket').document(row["name"]).get()
+            ref = firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').document(
+                row["name"]).get()
             if ref.exists:
                 # Update quantity & add total price
                 ref = ref.to_dict()
@@ -235,11 +255,12 @@ def add_product_to_cart():
                 row = {'name': row['name'], 'code': row['code'], 'image': row['image'], 'quantity': basket_quantity,
                        'price': row['price'], 'total_price': basket_quantity * row['price']}
 
-                db.collection(u'users').document(person["uid"]).collection(u'basket').document(row["name"]) \
+                firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').document(row["name"]) \
                     .set(row, merge=True)
             else:
                 # Add item
-                db.collection(u'users').document(person["uid"]).collection(u'basket').document(row["name"]).set(row)
+                firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').document(
+                    row["name"]).set(row)
 
             return redirect(url_for('data'))
         else:
@@ -266,7 +287,7 @@ def login():
             person["uid"] = user["localId"]
 
             # Get the data of the user
-            login_data = db.collection(u'users').document(person["uid"]).get()
+            login_data = firestoreDB.collection(u'users').document(person["uid"]).get()
             login_data = login_data.to_dict()
             # "name": name, "email": email, "address": address, "picture": picture, "admin": admin
 
@@ -315,7 +336,7 @@ def signup():
 
                 # Append data to the firebase realtime database
                 signup_data = {"name": name, "email": email, "address": address, "picture": picture, "admin": admin}
-                db.collection(u'users').document(person["uid"]).set(signup_data)
+                firestoreDB.collection(u'users').document(person["uid"]).set(signup_data)
             except:
                 # If there is any error, redirect to error
                 return redirect(url_for('error_found'))
