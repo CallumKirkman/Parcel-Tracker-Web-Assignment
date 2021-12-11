@@ -109,6 +109,7 @@ def create_data(table, item_id, item_name, item):
 # TODO: Admin user?
 # Initialise person as dictionary
 person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
+idToken = ""
 
 
 @app.context_processor
@@ -145,9 +146,30 @@ def about():
 
 @app.route('/account')
 def account():
-    # TODO: Ability to delete account!
-
     return render_template('account.html')
+
+
+@app.route('/delete-account')
+def delete_account():
+    # Delete user information
+    firestoreDB.collection(u'users').document(person["uid"]).delete()
+
+    # Delete user account
+    auth.delete_user_account(idToken)
+
+    return redirect(url_for('reset_global'))
+
+
+@app.route('/reset-global')
+def reset_global():
+    # Reset global variables
+    global idToken
+    idToken = ""
+
+    global person
+    person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
+
+    return redirect(url_for('home'))
 
 
 @app.route('/update-account', methods=["POST", "GET"])
@@ -280,6 +302,9 @@ def login():
             # Try signing in the user with the given information
             user = auth.sign_in_with_email_and_password(email, password)
 
+            global idToken
+            idToken = user["idToken"]
+
             # Add data to global person
             global person
             person["is_logged_in"] = True
@@ -324,15 +349,19 @@ def signup():
                 auth.create_user_with_email_and_password(email, password)
                 # Login the user
                 user = auth.sign_in_with_email_and_password(email, password)
+
+                global idToken
+                idToken = user["idToken"]
+
                 # Add data to global person
                 global person
                 person["is_logged_in"] = True
                 person["name"] = name
                 person["email"] = user["email"]
                 person["uid"] = user["localId"]
-                address = person["address"]
-                picture = person["picture"]
-                admin = person["admin"]
+                address = ""
+                picture = ""
+                admin = False
 
                 # Append data to the firebase realtime database
                 signup_data = {"name": name, "email": email, "address": address, "picture": picture, "admin": admin}
