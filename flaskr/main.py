@@ -136,6 +136,8 @@ def data():
 
 @app.route('/tracking')
 def tracking():
+    # TODO: Fill page with orders
+
     return render_template('tracking.html')
 
 
@@ -233,7 +235,6 @@ def create_order():
 
     orders.insert_one({"order": order})
 
-    # TODO: maybe - create order function?
     return redirect(url_for('tracking'))
 
 
