@@ -34,7 +34,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 
-# SQL connect to database
+# Product SQL connect to database
 def open_connection():
     try:
         # When deployed to App Engine, the `GAE_ENV` environment variable will be set to `standard`
@@ -67,7 +67,7 @@ def open_connection():
     return cnx
 
 
-# SQL get data
+# Product SQL get data
 def get_data(item, table, column, column_id):  # TODO: is table needed?
     cnx = open_connection()
 
@@ -87,7 +87,7 @@ def get_data(item, table, column, column_id):  # TODO: is table needed?
         return got_items
 
 
-# SQL create data
+# Product SQL create data
 def create_data(item):
     cnx = open_connection()
     with cnx.cursor() as cursor:
@@ -96,11 +96,10 @@ def create_data(item):
     cnx.close()
 
 
+# TODO: Cloud functions?
+# TODO: Admin user?
 # Initialise person as dictionary
 person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
-
-
-# TODO: Admin user?
 
 
 @app.context_processor
