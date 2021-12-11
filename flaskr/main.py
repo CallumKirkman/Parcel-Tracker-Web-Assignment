@@ -88,15 +88,15 @@ def get_data(item, table, column, column_id):  # TODO: is table needed?
 
 
 # Product SQL create data
-def create_data(item):
+def create_data(table, item_id, item_name, item):
     cnx = open_connection()
     with cnx.cursor() as cursor:
-        cursor.execute('INSERT INTO item (item_id, item_name) VALUES(%s, %s)' % (item["4"], item["test"]))
+        cursor.execute('INSERT INTO %s (%s, %s) VALUES(%s, %s)' % (table, item_id, item_name, item["4"], item["test"]))
     cnx.commit()
     cnx.close()
 
 
-# TODO: Cloud functions?
+# TODO: Cloud functions
 # TODO: Admin user?
 # Initialise person as dictionary
 person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
@@ -126,9 +126,7 @@ def data():
 
 @app.route('/tracking')
 def tracking():
-    # TODO: Create order database
-    # TODO: maybe - create order function? On checkout?
-    # TODO: add order to database
+    # TODO: Create order database!!
 
     return render_template('tracking.html')
 
@@ -140,6 +138,8 @@ def about():
 
 @app.route('/account')
 def account():
+    # TODO: Ability to delete account!
+
     return render_template('account.html')
 
 
@@ -185,6 +185,15 @@ def checkout():
         items = "No items in cart"
 
     return render_template('checkout.html', items=items, checkout_price=checkout_price)
+
+
+@app.route('/create-order')
+def create_order():
+    # TODO: maybe - create order function? On checkout?
+    # TODO: add order to database
+    # TODO: wipe basket?
+
+    return redirect(url_for('tracking'))
 
 
 @app.route('/delete')
