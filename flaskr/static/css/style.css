@@ -19,9 +19,8 @@
   background-color: #ddd;
 }
 
-#product-list {
-  width: 50%;
-  margin: 0 auto;
+#base-container {
+  padding-top: 5px;
 }
 
 .vertical-center {
@@ -30,6 +29,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#product-list {
+  width: 50%;
+  margin: 0 auto;
 }
 
 /* Add an active class to highlight the current page

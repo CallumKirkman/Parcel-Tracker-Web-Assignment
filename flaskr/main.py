@@ -97,12 +97,16 @@ def create_data(item):
 
 
 # Initialise person as dictionary
-person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}  # TODO: Admin user
+person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
+
+
+# TODO: Admin user?
 
 
 @app.context_processor
 def inject_status():
-    return dict(logg_status=person["is_logged_in"], name=person["name"], email=person["email"], uid=person["uid"])
+    return dict(logg_status=person["is_logged_in"], name=person["name"], email=person["email"], uid=person["uid"],
+                address=person["address"], picture=person["picture"], admin=person["admin"])
 
 
 @app.route('/')
@@ -123,12 +127,9 @@ def data():
 
 @app.route('/tracking')
 def tracking():
-    # TODO: Add orders to user firebase
-
+    # TODO: Create order database
     # TODO: maybe - create order function? On checkout?
-    # TODO: if doesn't exist - add order collection to user
-    # TODO: add order to collection
-    # TODO: add items to order
+    # TODO: add order to database
 
     return render_template('tracking.html')
 
@@ -141,6 +142,34 @@ def about():
 @app.route('/account')
 def account():
     return render_template('account.html')
+
+
+@app.route('/update-account', methods=["POST", "GET"])
+def update_account():
+    if request.method == "POST":  # Only if data has been posted
+        request_result = request.form  # Get the data
+        name = request_result["name"]
+        email = request_result["email"]
+        address = request_result["address"]
+        picture = request_result["picture"]
+
+        if name == "":
+            name = person["name"]
+        if email == "":
+            email = person["email"]
+        if address == "":
+            address = person["address"]
+        if picture == "":
+            picture = person["picture"]
+
+        user_info = {"name": name, "email": email, "address": address, "picture": picture}
+
+        db.collection(u'users').document(person["uid"]).set(user_info, merge=True)
+
+        return redirect(url_for('home'))
+
+    else:
+        return redirect(url_for('error_found'))
 
 
 @app.route('/checkout')
@@ -161,17 +190,13 @@ def checkout():
 
 @app.route('/delete')
 def delete_product(code):
-    # TODO: remove item from basket
+    # TODO: remove item from basket?
 
-    # all_total_price = 0?
-    # all_total_quantity = 0?
-
-    return redirect(url_for('data'))
+    return redirect(url_for('checkout'))
 
 
 @app.route('/empty')
 def empty_cart():
-
     item_location = db.collection(u'users').document(person["uid"]).collection(u'basket').stream()
     for item in item_location:
         item.reference.delete()
@@ -225,16 +250,23 @@ def login():
         try:
             # Try signing in the user with the given information
             user = auth.sign_in_with_email_and_password(email, password)
-            # Insert the user data in the global person
+
+            # Add data to global person
             global person
             person["is_logged_in"] = True
             person["email"] = user["email"]
             person["uid"] = user["localId"]
-            # Get the name of the user
-            login_data = db.collection(u'users').document(person["uid"])
-            login_data = login_data.get()
+
+            # Get the data of the user
+            login_data = db.collection(u'users').document(person["uid"]).get()
             login_data = login_data.to_dict()
+            # "name": name, "email": email, "address": address, "picture": picture, "admin": admin
+
             person["name"] = login_data["name"]
+            person["address"] = login_data["address"]
+            person["picture"] = login_data["picture"]
+            person["admin"] = login_data["admin"]
+
         except:
             # If there is any error, redirect to error
             return redirect(url_for('error_found'))
@@ -269,8 +301,12 @@ def signup():
                 person["name"] = name
                 person["email"] = user["email"]
                 person["uid"] = user["localId"]
+                address = person["address"]
+                picture = person["picture"]
+                admin = person["admin"]
+
                 # Append data to the firebase realtime database
-                signup_data = {"name": name, "email": email}
+                signup_data = {"name": name, "email": email, "address": address, "picture": picture, "admin": admin}
                 db.collection(u'users').document(person["uid"]).set(signup_data)
             except:
                 # If there is any error, redirect to error
@@ -309,8 +345,6 @@ def error_found():
 if __name__ == '__main__':
     # conn = open_connection()  # TODO: Make work on cloud?
     app.run()
-    # Only run for local development.
-    # app.run(host='127.0.0.1', port=8080, debug=True)
 
 # @app.route('/add', methods=['POST'])
 # def add_item():

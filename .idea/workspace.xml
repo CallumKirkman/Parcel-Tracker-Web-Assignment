@@ -5,8 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/templates/checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/checkout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/templates/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/data.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flaskr/templates/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/account.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flaskr/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
