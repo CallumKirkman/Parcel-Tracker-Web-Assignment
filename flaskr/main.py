@@ -165,19 +165,7 @@ def delete_account():
     # Delete user account
     auth.delete_user_account(idToken)
 
-    return redirect(url_for('reset_global'))
-
-
-@app.route('/reset-global')
-def reset_global():
-    # Reset global variables
-    global idToken
-    idToken = ""
-
-    global person
-    person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
-
-    return redirect(url_for('home'))
+    return redirect(url_for('logout'))
 
 
 @app.route('/update-account', methods=["POST", "GET"])
@@ -386,9 +374,14 @@ def signup():
             return redirect(url_for('error_found'))
 
 
-@app.route("/logout", methods=["POST", "GET"])
+@app.route('/logout')
 def logout():
-    person["is_logged_in"] = False
+    # Reset global variables
+    global idToken
+    idToken = ""
+
+    global person
+    person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
 
     return redirect(url_for('home'))
 
