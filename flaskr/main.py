@@ -40,7 +40,7 @@ firestoreDB = firestore.client()
 cluster = MongoClient(
     "mongodb+srv://admin:adminpassword@adparceltracker.gxnsa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 mongoDB = cluster["order-database"]
-orders = mongoDB["orders"]
+order_collection = mongoDB["orders"]
 
 
 # Product SQL connect to database
@@ -136,9 +136,15 @@ def data():
 
 @app.route('/tracking')
 def tracking():
-    # TODO: Fill page with orders
+    order_find = order_collection.find({"order.uid": person["uid"]})
+    orders = []
+    for order in order_find:
+        orders.append(order)
 
-    return render_template('tracking.html')
+    if len(orders) == 0:
+        orders = "No current orders"
+
+    return render_template('tracking.html', orders=orders)
 
 
 @app.route('/about')
@@ -233,7 +239,7 @@ def create_order():
     order = {"uid": person["uid"], "items": items, "orderPrice": checkout_price, "date": date,
              "progress": "processing"}
 
-    orders.insert_one({"order": order})
+    order_collection.insert_one({"order": order})
 
     return redirect(url_for('tracking'))
 

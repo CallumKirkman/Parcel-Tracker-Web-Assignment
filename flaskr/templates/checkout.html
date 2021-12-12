@@ -17,36 +17,34 @@
             </div>
         </div>
     </div>
-</div>
 
-<div id="item-grid">
-    {% if (items == "No items in cart") %}
-    <h1>No items in cart</h1>
+    <div id="item-grid">
+        {% if (items == "No items in cart") %}
+        <h1>No items in cart</h1>
 
-    {% else %}
-    {% for item in items %}
-
-
-    <div class="item-item">
-        <div class="item-tile-footer">
-            <hr/>
-            <div class="item-title">{{ item.name }}</div>
-            <div class="item-image"><img src="../{{ item.image }}" style="width:240px;height:200px;"></div>
-            <div class="item-quantity">Quantity: {{ item.quantity }}</div>
-            <div class="item-total_price">£ {{ item.total_price }}</div>
-            <hr/>
-            <br>
+        {% else %}
+        {% for item in items %}
+        <div class="item-item">
+            <div class="item-tile-footer">
+                <hr/>
+                <div class="item-title">{{ item.name }}</div>
+                <div class="item-image"><img src="../{{ item.image }}" style="width:240px;height:200px;"></div>
+                <div class="item-quantity">Quantity: {{ item.quantity }}</div>
+                <div class="item-total_price">£ {{ item.total_price }}</div>
+                <hr/>
+                <br>
+            </div>
         </div>
-    </div>
 
-    {% endfor %}
-    <div class="panel-body">
-        <h4 class="text-center">Total price = {{ checkout_price }}</h4>
-        <a href="{{ url_for('empty_cart') }}" class="btn btn-danger vertical-center">Clear basket</a><br>
-        <a href="{{ url_for('create_order') }}" class="btn btn-success vertical-center">Checkout</a>
+        {% endfor %}
+        <div class="panel-body">
+            <h4 class="text-center">Total price = {{ checkout_price }}</h4>
+            <a href="{{ url_for('empty_cart') }}" class="btn btn-danger vertical-center">Clear basket</a><br>
+            <a href="{{ url_for('create_order') }}" class="btn btn-success vertical-center">Checkout</a>
+        </div>
+        <!--<br><br>-->
+        {% endif %}
     </div>
-    <br><br>
-    {% endif %}
 </div>
 </body>
 {% endblock %}

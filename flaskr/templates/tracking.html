@@ -7,9 +7,43 @@
 
 {% block content %}
 <body>
-<div class="main-body">
-    <h1>Welcome to Tracking</h1>
-    <p>Order and location</p>
+<div class="container" id="order-list" style="margin-top: 40px !important;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-body">
+                <hr>
+                <h1 class="text-center pageTitle">Welcome to Tracking</h1>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        {% if (orders == "No current orders") %}
+        <h1>No current orders</h1>
+
+        {% else %}
+        {% for each in orders %}
+        <h4>Order:</h4>
+        {% for item in each['order']['items'] %}
+        <div class="order-order">
+            <div class="order-tile-footer">
+                <div class="order-title">{{ item['name'] }}</div>
+                <!--<div class="order-image"><img src="../{{ item['image'] }}" style="width:240px;height:200px;"></div>-->
+                <div class="order-quantity">Quantity: {{ item['quantity'] }}</div>
+                <br>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="order-orderPrice">Total: £{{ each.order.orderPrice }}</div>
+        <br>
+        <div class="order-progress">Shipping progress: {{ each.order.progress }}</div>
+        <hr>
+        <br>
+        {% endfor %}
+        {% endif %}
+    </div>
 </div>
 </body>
 {% endblock %}
