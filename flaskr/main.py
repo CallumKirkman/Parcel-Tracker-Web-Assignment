@@ -354,12 +354,13 @@ def signup():
                 person["name"] = name
                 person["email"] = user["email"]
                 person["uid"] = user["localId"]
-                address = ""
-                picture = ""
-                admin = False
+                person["address"] = ""
+                person["picture"] = "/static/assets/user.png"
+                person["admin"] = False
 
                 # Append data to the firebase realtime database
-                signup_data = {"name": name, "email": email, "address": address, "picture": picture, "admin": admin}
+                signup_data = {"name": name, "email": email, "address": person["address"], "picture": person["picture"],
+                               "admin": person["admin"]}
                 firestoreDB.collection(u'users').document(person["uid"]).set(signup_data)
             except:
                 # If there is any error, redirect to error
