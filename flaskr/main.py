@@ -251,7 +251,7 @@ def empty_cart():
     for item in item_location:
         item.reference.delete()
 
-    return redirect(url_for('checkout'))
+    return redirect(url_for('product'))
 
 
 @app.route('/add-to-cart', methods=['POST'])
