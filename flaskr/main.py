@@ -5,7 +5,7 @@ import pymysql
 
 from datetime import datetime
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session, abort
+from flask import Flask, render_template, request, redirect, url_for
 
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -77,7 +77,7 @@ def open_connection():
 
 
 # Product SQL get data
-def get_data(item, table, column, column_id):  # TODO: is table needed?
+def get_data(item, table, column, column_id):
     cnx = open_connection()
 
     with cnx.cursor() as cursor:
@@ -105,8 +105,6 @@ def create_data(table, item_id, item_name, item):
     cnx.close()
 
 
-# TODO: Cloud functions
-# TODO: Admin user?
 # Initialise person as dictionary
 person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
 idToken = ""
@@ -136,7 +134,11 @@ def data():
 
 @app.route('/tracking')
 def tracking():
-    order_find = order_collection.find({"order.uid": person["uid"]})
+    if person["admin"]:
+        order_find = order_collection.find()
+    else:
+        order_find = order_collection.find({"order.uid": person["uid"]})
+
     orders = []
     for order in order_find:
         orders.append(order)
@@ -154,6 +156,17 @@ def about():
 
 @app.route('/account')
 def account():
+    # Get the data of the active user
+    account_data = firestoreDB.collection(u'users').document(person["uid"]).get()
+    account_data = account_data.to_dict()
+    # "name": name, "email": email, "address": address, "picture": picture, "admin": admin
+
+    # Update the data of the active user
+    person["name"] = account_data["name"]
+    person["email"] = account_data["email"]
+    person["address"] = account_data["address"]
+    person["picture"] = account_data["picture"]
+
     return render_template('account.html')
 
 
@@ -230,13 +243,6 @@ def create_order():
     order_collection.insert_one({"order": order})
 
     return redirect(url_for('tracking'))
-
-
-@app.route('/delete')
-def delete_product(code):
-    # TODO: remove item from basket?
-
-    return redirect(url_for('checkout'))
 
 
 @app.route('/empty')
@@ -402,12 +408,4 @@ def error_found():
 
 
 if __name__ == '__main__':
-    # conn = open_connection()  # TODO: Make work on cloud?
     app.run()
-
-# @app.route('/add', methods=['POST'])
-# def add_item():
-#     if not request.is_json:
-#         return jsonify({"msg": "Missing JSON in request"}), 400
-#     create_data(request.get_json())
-#     return 'Item Added'

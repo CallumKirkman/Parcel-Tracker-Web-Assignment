@@ -4,11 +4,6 @@
     <list default="true" id="caa95196-1064-4529-b713-115259d4028a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/static/assets/product_images/xbox360.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/static/assets/product_images/xbox360.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/static/assets/product_images/xboxsx.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/static/assets/product_images/xboxsx.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/static/scripts/auth.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/templates/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/account.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/templates/checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/checkout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/templates/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/data.html" afterDir="false" />
     </list>

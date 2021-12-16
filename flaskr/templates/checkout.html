@@ -30,7 +30,7 @@
                 <div class="item-title">{{ item.name }}</div>
                 <div class="item-image"><img src="../{{ item.image }}" style="width:240px;height:200px;"></div>
                 <div class="item-quantity">Quantity: {{ item.quantity }}</div>
-                <div class="item-total_price">£ {{ item.total_price }}</div>
+                <div class="item-total_price">£ {{ item.total_price }}0</div>
                 <hr/>
                 <br>
             </div>
@@ -38,7 +38,7 @@
 
         {% endfor %}
         <div class="panel-body">
-            <h4 class="text-center">Total price: {{ checkout_price }}</h4>
+            <h4 class="text-center">Total price: £{{ checkout_price }}0</h4>
             <a href="{{ url_for('empty_cart') }}" class="btn btn-danger vertical-center">Clear basket</a><br>
             <a href="{{ url_for('create_order') }}" class="btn btn-success vertical-center">Checkout</a>
         </div>
