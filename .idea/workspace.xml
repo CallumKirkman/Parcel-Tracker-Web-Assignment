@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="caa95196-1064-4529-b713-115259d4028a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/parcelTracking.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/parcelTracking.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/templates/checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/checkout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/templates/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/data.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flaskr/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/about.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,14 +56,14 @@
       <recent name="C:\Users\callu\PycharmProjects\advanced-development-assignment-CallumKirkman\flaskr\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\callu\PycharmProjects\advanced-development-assignment-CallumKirkman\flaskr\static\assets\product_images" />
       <recent name="C:\Users\callu\PycharmProjects\advanced-development-assignment-CallumKirkman\flaskr" />
+      <recent name="C:\Users\callu\PycharmProjects\advanced-development-assignment-CallumKirkman\flaskr\static\assets\product_images" />
       <recent name="C:\Users\callu\PycharmProjects\advanced-development-assignment-CallumKirkman\flaskr\static\assets" />
       <recent name="C:\Users\callu\PycharmProjects\advanced-development-assignment-CallumKirkman\flaskr\static\scripts" />
       <recent name="C:\Users\callu\PycharmProjects\advanced-development-assignment-CallumKirkman\flaskr\static\css" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="parcelTracking" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -85,8 +85,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Python tests in tests.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="parcelTracking" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/flaskr" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/flaskr/tests.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python tests.Python tests in tests.py" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Python tests in tests.py" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>

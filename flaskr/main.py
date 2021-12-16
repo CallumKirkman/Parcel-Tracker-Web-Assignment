@@ -287,7 +287,7 @@ def add_product_to_cart():
 
             return redirect(url_for('data'))
         else:
-            return redirect(url_for('error_found'))  # or 'Error while adding item to cart'?
+            return redirect(url_for('error_found'))
     except Exception as e:
         print(e)
 
@@ -360,7 +360,7 @@ def signup():
                 person["name"] = name
                 person["email"] = user["email"]
                 person["uid"] = user["localId"]
-                person["address"] = ""
+                person["address"] = "Add address"
                 person["picture"] = "/static/assets/user.png"
                 person["admin"] = False
 
