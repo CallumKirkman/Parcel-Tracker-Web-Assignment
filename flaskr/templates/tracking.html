@@ -22,8 +22,8 @@
     <div class="row">
         {% if (orders == "No current orders") %}
         <h1>No current orders</h1>
-
         {% else %}
+
         {% for each in orders %}
         <h4>Order:</h4>
         {% for item in each['order']['items'] %}

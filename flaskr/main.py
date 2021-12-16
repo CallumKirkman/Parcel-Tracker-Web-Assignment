@@ -125,11 +125,11 @@ def home():
         return render_template("home.html")
 
 
-@app.route('/data')
-def data():
+@app.route('/product')
+def product():
     products = get_data("*", "product", None, None)
 
-    return render_template('data.html', products=products)
+    return render_template('product.html', products=products)
 
 
 @app.route('/tracking')
@@ -285,7 +285,7 @@ def add_product_to_cart():
                 firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').document(
                     row["name"]).set(row)
 
-            return redirect(url_for('data'))
+            return redirect(url_for('product'))
         else:
             return redirect(url_for('error_found'))
     except Exception as e:

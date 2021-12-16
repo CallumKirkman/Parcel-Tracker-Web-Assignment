@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="caa95196-1064-4529-b713-115259d4028a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/parcelTracking.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/parcelTracking.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flaskr/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flaskr/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flaskr/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flaskr/templates/tracking.html" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/templates/tracking.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flaskr/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/flaskr/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,8 +106,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests in tests.py" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python tests.Python tests in tests.py" />
       </list>
     </recent_temporary>
   </component>

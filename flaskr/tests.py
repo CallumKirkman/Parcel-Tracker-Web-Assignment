@@ -9,9 +9,9 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/home', content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
-    def test_data(self):
+    def test_product(self):
         tester = app.test_client(self)
-        response = tester.get('/data', content_type='html/text')
+        response = tester.get('/product', content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
     def test_tracking(self):
@@ -24,35 +24,10 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/about', content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
-    # def test_account(self):
-    #     tester = app.test_client(self)
-    #     response = tester.get('/account', content_type='html/text')
-    #     self.assertEqual(response.status_code, 200)
-
-    # def test_delete_account(self):
-    #     tester = app.test_client(self)
-    #     response = tester.get('/delete-account', content_type='html/text')
-    #     self.assertEqual(response.status_code, 302)
-
     def test_update_account(self):
         tester = app.test_client(self)
         response = tester.get('/update-account', content_type='html/text')
         self.assertEqual(response.status_code, 302)
-
-    # def test_checkout(self):
-    #     tester = app.test_client(self)
-    #     response = tester.get('/checkout', content_type='html/text')
-    #     self.assertEqual(response.status_code, 200)
-
-    # def test_create_order(self):
-    #     tester = app.test_client(self)
-    #     response = tester.get('/create-order', content_type='html/text')
-    #     self.assertEqual(response.status_code, 302)
-
-    # def test_empty(self):
-    #     tester = app.test_client(self)
-    #     response = tester.get('/empty', content_type='html/text')
-    #     self.assertEqual(response.status_code, 302)
 
     def test_add_to_cart(self):
         tester = app.test_client(self)
@@ -78,6 +53,30 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/error', content_type='html/text')
         self.assertEqual(response.status_code, 200)
+
+    # def test_account(self):
+    #     tester = app.test_client(self)
+    #     response = tester.get('/account', content_type='html/text')
+    #     self.assertEqual(response.status_code, 200)
+
+    # def test_delete_account(self):
+    #     tester = app.test_client(self)
+    #     response = tester.get('/delete-account', content_type='html/text')
+    #     self.assertEqual(response.status_code, 302)
+    # def test_checkout(self):
+    #     tester = app.test_client(self)
+    #     response = tester.get('/checkout', content_type='html/text')
+    #     self.assertEqual(response.status_code, 200)
+
+    # def test_create_order(self):
+    #     tester = app.test_client(self)
+    #     response = tester.get('/create-order', content_type='html/text')
+    #     self.assertEqual(response.status_code, 302)
+
+    # def test_empty(self):
+    #     tester = app.test_client(self)
+    #     response = tester.get('/empty', content_type='html/text')
+    #     self.assertEqual(response.status_code, 302)
 
 
 if __name__ == '__main__':
