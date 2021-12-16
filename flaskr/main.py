@@ -36,15 +36,32 @@ firebase_admin.initialize_app(cred)
 # initialize firestore instance
 firestoreDB = firestore.client()
 
+
 # Initialize mongoDB
-cluster = MongoClient(
-    "mongodb+srv://admin:adminpassword@adparceltracker.gxnsa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-mongoDB = cluster["order-database"]
-order_collection = mongoDB["orders"]
+def open_mongodb_connection():
+    if os.environ.get('GAE_ENV') == 'standard':
+        mongo_username = os.environ.get('MONGO_DB_USERNAME')
+        mongo_password = os.environ.get('MONGO_DB_PASSWORD')
+        mongo_connect_name = os.environ.get('MONGO_DB_CONNECTION_NAME')
+    else:
+        load_dotenv()
+        mongo_username = os.getenv('MONGO_DB_USERNAME')
+        mongo_password = os.getenv('MONGO_DB_PASSWORD')
+        mongo_connect_name = os.getenv('MONGO_DB_CONNECTION_NAME')
+
+    client_connection_string = (
+            "mongodb+srv://%s:%s@%s.gxnsa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" % (
+        mongo_username, mongo_password, mongo_connect_name))
+    print(client_connection_string)
+    cluster = MongoClient(client_connection_string)
+    mongo_db = cluster["order-database"]
+    order_collection = mongo_db["orders"]
+
+    return order_collection
 
 
 # Product SQL connect to database
-def open_connection():
+def open_cloudsql_connection():
     try:
         # When deployed to App Engine, the `GAE_ENV` environment variable will be set to `standard`
         if os.environ.get('GAE_ENV') == 'standard':
@@ -78,7 +95,7 @@ def open_connection():
 
 # Product SQL get data
 def get_data(item, table, column, column_id):
-    cnx = open_connection()
+    cnx = open_cloudsql_connection()
 
     with cnx.cursor() as cursor:
         if column is None:
@@ -98,7 +115,7 @@ def get_data(item, table, column, column_id):
 
 # Product SQL create data
 def create_data(table, item_id, item_name, item):
-    cnx = open_connection()
+    cnx = open_cloudsql_connection()
     with cnx.cursor() as cursor:
         cursor.execute('INSERT INTO %s (%s, %s) VALUES(%s, %s)' % (table, item_id, item_name, item["4"], item["test"]))
     cnx.commit()
@@ -134,6 +151,8 @@ def product():
 
 @app.route('/tracking')
 def tracking():
+    order_collection = open_mongodb_connection()
+
     if person["admin"]:
         order_find = order_collection.find()
     else:
@@ -227,6 +246,8 @@ def checkout():
 
 @app.route('/create-order')
 def create_order():
+    order_collection = open_mongodb_connection()
+
     item_location = firestoreDB.collection(u'users').document(person["uid"]).collection(u'basket').stream()
     date = datetime.today().strftime('%d-%m-%y')
     items = []
