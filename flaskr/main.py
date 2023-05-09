@@ -50,8 +50,7 @@ def open_mongodb_connection():
         mongo_connect_name = os.getenv('MONGO_DB_CONNECTION_NAME')
 
     client_connection_string = (
-            "mongodb+srv://%s:%s@%s.gxnsa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" % (
-        mongo_username, mongo_password, mongo_connect_name))
+        "mongodb+srv://admin:adminpassword@adparceltracker.gxnsa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     print(client_connection_string)
     cluster = MongoClient(client_connection_string)
     mongo_db = cluster["order-database"]
