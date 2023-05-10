@@ -14,6 +14,8 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
+# TODO: Fix databases
+
 # Firebase details
 firebaseConfig = {
     "apiKey": "AIzaSyBIYDxM_WvnjhiSL5SSZEM_mRsYelfvFgk",
