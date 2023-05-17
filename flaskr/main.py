@@ -21,6 +21,7 @@ app = Flask(__name__)
 app.secret_key = "testing"
 users = db.users
 
+
 # # Initialize mongoDB
 # def open_mongodb_connection():
 #     # When deployed to App Engine, the `GAE_ENV` environment variable will be set to `standard`
@@ -133,6 +134,47 @@ def logged_in():
         return redirect(url_for("login"))
 
 
+# # If someone clicks on login, they are redirected to /login
+# @app.route("/login", methods=["POST", "GET"])
+# def login():
+#     if request.method == "POST":  # Only if data has been posted
+#         request_result = request.form  # Get the data
+#         email = request_result["email"]
+#         password = request_result["pass"]
+#         try:
+#             # Try signing in the user with the given information
+#             user = auth.sign_in_with_email_and_password(email, password)
+#
+#             global idToken
+#             idToken = user["idToken"]
+#
+#             # Add data to global person
+#             global person
+#             person["is_logged_in"] = True
+#             person["email"] = user["email"]
+#             person["uid"] = user["localId"]
+#
+#             # Get the data of the user
+#             login_data = firestoreDB.collection(u'users').document(person["uid"]).get()
+#             login_data = login_data.to_dict()
+#             # "name": name, "email": email, "address": address, "picture": picture, "admin": admin
+#
+#             person["name"] = login_data["name"]
+#             person["address"] = login_data["address"]
+#             person["picture"] = login_data["picture"]
+#             person["admin"] = login_data["admin"]
+#
+#         except:
+#             # If there is any error, redirect to error
+#             return redirect(url_for('error_found'))
+#         else:
+#             # To home page
+#             return redirect(url_for('home'))
+#     else:
+#         if person["is_logged_in"]:
+#             return redirect(url_for('home'))
+#         else:
+#             return redirect(url_for('error_found'))
 @app.route("/login", methods=["POST", "GET"])
 def login():
     message = 'Please login to your account'
@@ -162,11 +204,21 @@ def login():
     return render_template('login0.html', message=message)
 
 
+# @app.route('/logout')
+# def logout():
+#     # Reset global variables
+#     global idToken
+#     idToken = ""
+#
+#     global person
+#     person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
+#
+#     return redirect(url_for('home'))
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     if "email" in session:
         session.pop("email", None)
-        return render_template("sign_out0.html")
+        return render_template("sign_out.html")
     else:
         return render_template('signup0.html')
 
@@ -342,49 +394,6 @@ def logout():
 #         print(e)
 #
 #
-# # If someone clicks on login, they are redirected to /login
-# @app.route("/login", methods=["POST", "GET"])
-# def login():
-#     if request.method == "POST":  # Only if data has been posted
-#         request_result = request.form  # Get the data
-#         email = request_result["email"]
-#         password = request_result["pass"]
-#         try:
-#             # Try signing in the user with the given information
-#             user = auth.sign_in_with_email_and_password(email, password)
-#
-#             global idToken
-#             idToken = user["idToken"]
-#
-#             # Add data to global person
-#             global person
-#             person["is_logged_in"] = True
-#             person["email"] = user["email"]
-#             person["uid"] = user["localId"]
-#
-#             # Get the data of the user
-#             login_data = firestoreDB.collection(u'users').document(person["uid"]).get()
-#             login_data = login_data.to_dict()
-#             # "name": name, "email": email, "address": address, "picture": picture, "admin": admin
-#
-#             person["name"] = login_data["name"]
-#             person["address"] = login_data["address"]
-#             person["picture"] = login_data["picture"]
-#             person["admin"] = login_data["admin"]
-#
-#         except:
-#             # If there is any error, redirect to error
-#             return redirect(url_for('error_found'))
-#         else:
-#             # To home page
-#             return redirect(url_for('home'))
-#     else:
-#         if person["is_logged_in"]:
-#             return redirect(url_for('home'))
-#         else:
-#             return redirect(url_for('error_found'))
-#
-#
 # # If someone clicks on signup, they are redirected to /signup
 # @app.route("/signup", methods=["POST", "GET"])
 # def signup():
@@ -429,18 +438,6 @@ def logout():
 #             return redirect(url_for('home'))
 #         else:
 #             return redirect(url_for('error_found'))
-#
-#
-# @app.route('/logout')
-# def logout():
-#     # Reset global variables
-#     global idToken
-#     idToken = ""
-#
-#     global person
-#     person = {"is_logged_in": False, "name": "", "email": "", "uid": "", "address": "", "picture": "", "admin": False}
-#
-#     return redirect(url_for('home'))
 
 
 @app.errorhandler(500)
