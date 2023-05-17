@@ -1,11 +1,6 @@
 runtime: python37
 
 env_variables:
-  CLOUD_SQL_USERNAME: admin
-  CLOUD_SQL_PASSWORD: adminpassword
-  CLOUD_SQL_DATABASE_NAME: product
-  CLOUD_SQL_CONNECTION_NAME: ck-ad-1:europe-west2:product-database
-
-  MONGO_DB_USERNAME: admin
-  MONGO_DB_PASSWORD: adminpassword
-  MONGO_DB_CONNECTION_NAME: adparceltracker
+  MONGO_DB_USERNAME: mainUser
+  MONGO_DB_PASSWORD: mainPassword
+  MONGO_DB_DATABASE_NAME: parcel_tracker

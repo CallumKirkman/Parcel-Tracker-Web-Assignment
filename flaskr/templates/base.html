@@ -1,13 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <meta name="description" content="Parcel Tracker">
     <meta name="author" content="Callum Kirkman">
 
+    <!-- Title -->
     <title>{% block title %}{% endblock %}</title>
+
+    <!-- Old CSS? -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"-->
+    <!-- integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,167 +20,46 @@
     <link href="../static/css/main.css" rel="stylesheet">
     <link href="../static/css/style.css" rel="stylesheet">
 </head>
+<body>
 
-<body onload="chooseFunction()">
+<!--<body onload="chooseFunction()">-->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <img src="../static/assets/companyLogo.png" alt="Company Logo" width="85" height="85"/>
+        <!--<img src="../static/assets/companyLogo.png" alt="Company Logo" width="85" height="85"/>-->
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('home') }}">Signup</a>
             </li>
             <li class="nav-item">
-                <a href="{{ url_for('product') }}">Products</a>
+                <a href="{{ url_for('login') }}">Login</a>
             </li>
             <li class="nav-item">
-                <a href="{{ url_for('tracking') }}">Order Tracking</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url_for('about') }}">About</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav me-right">
-            <li class="logged-in">
-                <a href="{{ url_for('account') }}" class="btn btn-primary btn-lg btn-info">Account</a>
-            </li>
-            <li class="logged-in">
-                <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-lg btn-warning">Basket</a>
-            </li>
-            <li class="logged-in">
-                <a onclick="logoutFunction()" href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg"
-                   id="logout">Logout</a>
-            </li>
-            <li class="logged-out">
-                <a href="#" class="btn btn-primary btn-lg modal-trigger"
-                   data-target="modal-login">Login</a>
-            </li>
-            <li class="logged-out">
-                <a href="#" class="btn btn-primary btn-lg modal-trigger" data-target="modal-signup">Sign up</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
             </li>
         </ul>
     </div>
 </nav>
 
-<!-- LOGIN MODAL -->
-<div id="modal-login" class="modal">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="wrapper fadeInDown">
-                <div id="formContentLogIn">
-                    <!-- Icon -->
-                    <div class="fadeIn first">
-                        <img src="../static/assets/user.png" id="logIcon" alt="User Icon"/>
-                    </div>
 
-                    <!-- Login Form -->
-                    <form action="{{ url_for('login') }}" method="POST">
-                        <input type="email" id="loginL" class="fadeIn second" name="email" placeholder="email">
-                        <input type="password" id="passwordL" class="fadeIn third" name="pass" placeholder="password">
-                        <input onclick="loginFunction()" type="submit" class="fadeIn fourth" value="Log In">
-                    </form>
-                    <div class="fadeIn fifth">
-                        <a class="underlineHover float-right" href="#">Forgot Password?</a>
-                        <button type="button" class="btn btn-danger float-right" onclick="closeLogin()">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
 
-<!-- SIGN UP MODAL -->
-<div id="modal-signup" class="modal">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="wrapper fadeInDown">
-                <div id="formContentSignIn">
-                    <!-- Icon -->
-                    <div class="fadeIn first">
-                        <img src="../static/assets/user.png" id="SignIcon" alt="User Icon"/>
-                    </div>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-                    <!-- Signup Form -->
-                    <form action="{{ url_for('signup') }}" method="POST">
-                        <input type="text" id="name" class="fadeIn second" name="name" placeholder="name">
-                        <input type="email" id="loginS" class="fadeIn second" name="email" placeholder="email">
-                        <input type="password" id="passwordS" class="fadeIn third" name="pass" placeholder="password">
-                        <input type="password" id="confirmPassword" class="fadeIn third" name="confPass"
-                               placeholder="Confirm password">
-                        <input onclick="loginFunction()" type="submit" class="fadeIn fourth" value="Sign Up">
-                    </form>
-                    <div class="fadeIn fifth">
-                        <a class="underlineHover float-right" href="#">Forgot Password?</a>
-                        <button type="button" class="btn btn-danger float-right" onclick="closeSignup()">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<main role="main" class="container" id="base-container" style="margin-top:110px">
-    <!-- Content -->
-    {% block content %}{% endblock %}
-
-</main>
-
-<script>
-    function closeLogin() {
-      let modal = document.querySelector('#modal-login');
-      M.Modal.getInstance(modal).close();
-    }
-    function closeSignup() {
-      let modal = document.querySelector('#modal-signup');
-      M.Modal.getInstance(modal).close();
-    }
-    function closeItem() {
-      let modal = document.querySelector('#modal-item');
-      M.Modal.getInstance(modal).close();
-    }
-</script>
-<script>
-    function chooseFunction() {
-      let status = '{{ logg_status }}';
-
-      if (status == "True") {
-        loginFunction();
-      } else {
-        logoutFunction();
-      }
-    }
-</script>
-<script>
-    function logoutFunction() {
-      var x, i;
-      x = document.querySelectorAll(".logged-in");
-      for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
-      }
-      var y, ii;
-      y = document.querySelectorAll(".logged-out");
-      for (ii = 0; ii < y.length; ii++) {
-        y[ii].style.display = "block";
-      }
-    }
-</script>
-<script>
-    function loginFunction() {
-      var x, i;
-      x = document.querySelectorAll(".logged-out");
-      for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
-      }
-      var y, ii;
-      y = document.querySelectorAll(".logged-in");
-      for (ii = 0; ii < y.length; ii++) {
-        y[ii].style.display = "block";
-      }
-    }
-</script>
-
-
-<!-- Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="../static/scripts/index.js"></script>
+{% block content %}{% endblock %}
 </body>
 </html>
