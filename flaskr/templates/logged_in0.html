@@ -1,7 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Logged in {% endblock %}
+{% set active_page = "home" %}
+
+<head>
+    {% block title %}Home{% endblock %}
+</head>
 
 {% block content %}
-<p>Hello You have Logged in as {{ email }}</p>
+<body>
+<div class="main-body">
+    <p>Welcome {{ name }}. You have Logged in as {{ email }}</p>
 
+    <!--    <h1 class="name">Hi, {{name}}</h1>-->
+    <!--    <hr style="width: 30%">-->
+    <!--	<h3 class="email">{{email}}</h3>-->
+</div>
+</body>
 {% endblock %}

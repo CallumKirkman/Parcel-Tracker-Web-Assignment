@@ -11,7 +11,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# New code
 from flask import Flask, render_template, request, url_for, redirect, session
 import bcrypt
 
@@ -92,9 +91,10 @@ users = db.users
 #     else:
 #         return render_template("home.html")
 @app.route("/", methods=["post", "get"])
-def home():
+def signup():
     if "email" in session:
         return redirect(url_for("logged_in"))
+
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
@@ -119,17 +119,19 @@ def home():
             users.insert_one(user_input)
 
             user_data = users.find_one({"email": email})
+            new_name = user_data["name"]
             new_email = user_data["email"]
 
-            return render_template("logged_in0.html", email=new_email)
+            return render_template("logged_in0.html", name=new_name, email=new_email)
     return render_template("signup0.html")
 
 
 @app.route('/logged_in')
 def logged_in():
     if "email" in session:
+        name = session["name"]
         email = session["email"]
-        return render_template('logged_in0.html', email=email)
+        return render_template('logged_in0.html', name=name, email=email)
     else:
         return redirect(url_for("login"))
 
@@ -185,12 +187,14 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        email_found = users.find_one({"email": email})
-        if email_found:
-            email_val = email_found['email']
-            password_check = email_found['password']
+        user_found = users.find_one({"email": email})
+        if user_found:
+            name_val = user_found['name']
+            email_val = user_found['email']
+            password_check = user_found['password']
 
             if bcrypt.checkpw(password.encode('utf-8'), password_check):
+                session["name"] = name_val
                 session["email"] = email_val
                 return redirect(url_for('logged_in'))
             else:
