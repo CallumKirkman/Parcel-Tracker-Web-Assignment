@@ -29,13 +29,35 @@
         <img src="../static/assets/companyLogo.png" alt="Company Logo" width="85" height="85"/>
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a href="{{ url_for('signup') }}">Signup</a>
+                <a href="{{ url_for('home') }}">Home</a>
             </li>
             <li class="nav-item">
-                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('product') }}">Products</a>
             </li>
             <li class="nav-item">
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <a href="{{ url_for('tracking') }}">Order Tracking</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('about') }}">About</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav me-right">
+            <li class="logged-in">
+                <a href="{{ url_for('account') }}" class="btn btn-primary btn-lg btn-info">Account</a>
+            </li>
+            <li class="logged-in">
+                <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-lg btn-warning">Basket</a>
+            </li>
+            <li class="logged-in">
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg" id="logout">Logout</a>
+            </li>
+            <li class="logged-out">
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg modal-trigger"
+                   data-target="modal-login">Login</a>
+            </li>
+            <li class="logged-out">
+                <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg modal-trigger"
+                   data-target="modal-signup">Sign up</a>
             </li>
         </ul>
     </div>

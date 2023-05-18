@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% set active_page = "tracking" %}
+
+<head>
+    {% block title %}Tracking{% endblock %}
+</head>
+
+{% block content %}
+<body>
+<div class="container" id="order-list" style="margin-top: 40px !important;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-body">
+                <hr>
+                <h1 class="text-center pageTitle">Welcome to Tracking</h1>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <h1>No current orders</h1>
+        <h3>OR</h3>
+
+        <h4>Order:</h4>
+        <h4>for item in each</h4>
+        <h4>name, image, quantity</h4>
+
+        <div class="order-orderPrice">Total: $</div>
+        <div class="order-date">Date ordered: date</div>
+        <br>
+        <div class="order-progress">Shipping progress: progress</div>
+        <hr>
+        <br>
+    </div>
+</div>
+</body>
+{% endblock %}

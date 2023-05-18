@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% set active_page = "checkout" %}
+
+<head>
+    {% block title %}Checkout{% endblock %}
+</head>
+
+{% block content %}
+<body>
+<div class="container" style="margin: 50px !important;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4 class="text-center pageTitle">Basket Checkout</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="item-grid">
+        <h1>No items in cart</h1>
+        <h3>OR</h3>
+
+        <div class="item-item">
+            <div class="item-tile-footer">
+                <hr/>
+                <div class="item-title">name</div>
+                <div class="item-image"><img src="../static/assets/user.png" style="width:240px;height:200px;"></div>
+                <div class="item-quantity">Quantity: quantity</div>
+                <div class="item-total_price">£</div>
+                <hr/>
+                <br>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <h4 class="text-center">Total price: £</h4>
+            <a href="{{ url_for('empty_cart') }}" class="btn btn-danger vertical-center">Clear basket</a><br>
+            <a href="{{ url_for('create_order') }}" class="btn btn-success vertical-center">Checkout</a>
+        </div>
+        <!--<br><br>-->
+    </div>
+</div>
+</body>
+{% endblock %}
