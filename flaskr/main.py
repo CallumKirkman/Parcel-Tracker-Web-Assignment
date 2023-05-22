@@ -1,11 +1,9 @@
 import logging
 import pyrebase
-import os
 import pymysql
 import bcrypt
 
 from datetime import datetime
-from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, session
 
 import firebase_admin
@@ -19,29 +17,6 @@ import db
 app = Flask(__name__)
 app.secret_key = "testing"
 users = db.users
-
-
-# # Initialize mongoDB
-# def open_mongodb_connection():
-#     # When deployed to App Engine, the `GAE_ENV` environment variable will be set to `standard`
-#     if os.environ.get('GAE_ENV') == 'standard':
-#         mongo_username = os.environ.get('MONGO_DB_USERNAME')
-#         mongo_password = os.environ.get('MONGO_DB_PASSWORD')
-#     else:
-#         load_dotenv()
-#         mongo_username = os.getenv('MONGO_DB_USERNAME')
-#         mongo_password = os.getenv('MONGO_DB_PASSWORD')
-#
-#     client_connection_string = (
-#         "mongodb+srv://mainUser:mainPassword@cluster.ktjzqqr.mongodb.net/parcelDatabase?retryWrites=true&w=majority")
-#     print(client_connection_string)
-#     client = MongoClient(client_connection_string)
-#     mongo_db = client["parcelDatabase"]
-#     users = mongo_db["users"]
-#     orders = mongo_db["order"]
-#     basket = mongo_db["basket"]
-#
-#     return users, orders, basket
 
 
 # # Product SQL get data
